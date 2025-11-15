@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -52,6 +51,7 @@
             margin-top: 2rem;
             padding-top: 2rem;
             border-top: 1px solid #eee;
+            flex-wrap: wrap;
         }
         
         .info-card {
@@ -67,190 +67,191 @@
             border-bottom: 2px solid #0ef;
             padding-bottom: 0.5rem;
         }
-    </style>
-</head>
-<body>
-<header>
-    <nav class="navbar">
-        <a class="nav-link" th:href="@{/home}">← Voltar para Lista de Alunos</a>
-    </nav>
-</header>
 
-<div class="container">
-    <div class="section active">
-        <h2>Detalhes do Aluno</h2>
-        
-        <div th:if="${aluno}" class="detalhes-container">
-            <div class="info-card">
-                <h3>Informações Pessoais</h3>
-                <div class="detalhes-item">
-                    <strong>Nome Completo:</strong>
-                    <span th:text="${aluno.nomeAluno}"></span>
-                </div>
-                <div class="detalhes-item">
-                    <strong>Matrícula:</strong>
-                    <span th:text="${aluno.matricula}" style="font-family: monospace; font-weight: bold; color: #0ef;"></span>
-                </div>
-            </div>
-            
-            <div class="info-card">
-                <h3>Informações Acadêmicas</h3>
-                <div class="detalhes-item">
-                    <strong>Curso:</strong>
-                    <span th:text="${aluno.curso}"></span>
-                </div>
-                <div class="detalhes-item">
-                    <strong>Turno:</strong>
-                    <span th:text="${aluno.turno}"></span>
-                </div>
-                <div class="detalhes-item">
-                    <strong>Status:</strong>
-                    <span th:text="${aluno.status}" 
-                          th:class="${aluno.status == 'Ativo'} ? 'badge-success' :
-                                   (${aluno.status == 'Inativo'} ? 'badge-danger' :
-                                   (${aluno.status == 'Trancado'} ? 'badge-warning' : 'badge-info'))">
-                    </span>
-                </div>
-            </div>
-            
-            <div class="info-card">
-                <h3>Informações do Sistema</h3>
-                <div class="detalhes-item">
-                    <strong>Data de Cadastro:</strong>
-                    <span th:text="${#temporals.format(aluno.dataCriacao, 'dd/MM/yyyy HH:mm')}"></span>
-                </div>
-                <div class="detalhes-item">
-                    <strong>Última Atualização:</strong>
-                    <span th:text="${#temporals.format(aluno.dataAtualizacao, 'dd/MM/yyyy HH:mm')}"></span>
-                </div>
-                <div class="detalhes-item">
-                    <strong>ID no Sistema:</strong>
-                    <span th:text="${aluno.id}" style="font-family: monospace;"></span>
-                </div>
-            </div>
-            
-            <div class="detalhes-actions">
-                <button class="btn-update" th:onclick="'window.location.href=\'/alunos/editar/' + ${aluno.id} + '\''">
-                    <ion-icon name="create"></ion-icon>
-                    Editar Aluno
-                </button>
-                
-               
-                
-                <button class="btn-back" th:onclick="'window.location.href=\'/home\''">
-                    <ion-icon name="arrow-back"></ion-icon>
-                    Voltar para Lista
-                </button>
-            </div>
-        </div>
-        
-        <div th:unless="${aluno}" class="no-data">
-            <p>Aluno não encontrado.</p>
-            <button class="btn-back" th:onclick="'window.location.href=\'/home\''">
-                <ion-icon name="arrow-back"></ion-icon>
-                Voltar para Lista
-            </button>
-        </div>
-    </div>
-</div>
-
-<footer>
-    <p>© Sistema Escolar 2025</p>
-</footer>
-
-<script>
-    function confirmarDelete(alunoId, alunoNome) {
-        if (confirm('Tem certeza que deseja deletar o aluno "' + alunoNome + '"?')) {
-            window.location.href = '/alunos/delete/' + alunoId;
+        /* Estilos para os badges de status */
+        .badge-success {
+            background-color: #28a745;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
         }
-    }
-</script>
-</body>
-=======
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Detalhes do Aluno - AcadSystem</title>
-    <link rel="stylesheet" th:href="@{/home.css}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <style>
-        .detalhes-container {
+        
+        .badge-danger {
+            background-color: #dc3545;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .badge-warning {
+            background-color: #ffc107;
+            color: #212529;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .badge-info {
+            background-color: #17a2b8;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        /* Estilos para os botões */
+        .btn-update {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9rem;
+            transition: background 0.3s;
+        }
+        
+        .btn-update:hover {
+            background: #0056b3;
+        }
+        
+        .btn-delete {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9rem;
+            transition: background 0.3s;
+        }
+        
+        .btn-delete:hover {
+            background: #c82333;
+        }
+        
+        .btn-back {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9rem;
+            transition: background 0.3s;
+            text-decoration: none;
+        }
+        
+        .btn-back:hover {
+            background: #545b62;
+            color: white;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 2rem;
             background: white;
             border-radius: 10px;
-            padding: 2rem;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            margin: 1rem 0;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
         }
-        
-        .detalhes-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem;
-            border-bottom: 1px solid #eee;
-            margin-bottom: 0.5rem;
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .detalhes-container {
+                padding: 1rem;
+                margin: 0.5rem;
+            }
+            
+            .detalhes-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+            
+            .detalhes-item strong {
+                min-width: auto;
+            }
+            
+            .detalhes-item span {
+                text-align: left;
+            }
+            
+            .detalhes-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .info-card {
+                padding: 1rem;
+            }
         }
-        
-        .detalhes-item:last-child {
-            border-bottom: none;
-        }
-        
-        .detalhes-item strong {
-            color: #333;
-            min-width: 150px;
-            font-weight: 600;
-        }
-        
-        .detalhes-item span {
-            color: #666;
-            text-align: right;
-            flex: 1;
-        }
-        
-        .detalhes-actions {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            margin-top: 2rem;
-            padding-top: 2rem;
-            border-top: 1px solid #eee;
-        }
-        
-        .info-card {
-            background: #f8f9fa;
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-        }
-        
-        .info-card h3 {
-            color: #333;
-            margin-bottom: 1rem;
-            border-bottom: 2px solid #0ef;
-            padding-bottom: 0.5rem;
+
+        @media (max-width: 480px) {
+            .detalhes-container {
+                padding: 0.5rem;
+            }
+            
+            .detalhes-item {
+                padding: 0.75rem 0.5rem;
+            }
+            
+            .btn-update,
+            .btn-delete,
+            .btn-back {
+                padding: 8px 16px;
+                font-size: 0.85rem;
+            }
         }
     </style>
 </head>
 <body>
 <header>
     <nav class="navbar">
-        <a class="nav-link" th:href="@{/home}">← Voltar para Lista de Alunos</a>
+        <div class="nav-group">
+            <a class="nav-link" href="/home">
+                <ion-icon name="home"></ion-icon>
+                <span class="nav-text">Página inicial</span>
+            </a>
+            <a class="nav-link" href="/relatorios">
+                <ion-icon name="bar-chart"></ion-icon>
+                <span class="nav-text">Relatórios</span>
+            </a>
+        </div>
+        <a class="nav-link nav-sair" href="/logout">
+            <ion-icon name="log-out"></ion-icon>
+            <span class="nav-text">Sair</span>
+        </a>
     </nav>
 </header>
 
 <div class="container">
     <div class="section active">
-        <h2>Detalhes do Aluno</h2>
+        <div class="nav-relatorios">
+            <h1>👤 Detalhes do Aluno</h1>
+            <a href="/home" class="btn-back">
+                <ion-icon name="arrow-back"></ion-icon>
+                Voltar para Lista
+            </a>
+        </div>
         
         <div th:if="${aluno}" class="detalhes-container">
             <div class="info-card">
-                <h3>Informações Pessoais</h3>
+                <h3>📋 Informações Pessoais</h3>
                 <div class="detalhes-item">
                     <strong>Nome Completo:</strong>
                     <span th:text="${aluno.nomeAluno}"></span>
@@ -262,7 +263,7 @@
             </div>
             
             <div class="info-card">
-                <h3>Informações Acadêmicas</h3>
+                <h3>🎓 Informações Acadêmicas</h3>
                 <div class="detalhes-item">
                     <strong>Curso:</strong>
                     <span th:text="${aluno.curso}"></span>
@@ -274,15 +275,15 @@
                 <div class="detalhes-item">
                     <strong>Status:</strong>
                     <span th:text="${aluno.status}" 
-                          th:class="${aluno.status == 'Ativo'} ? 'badge-success' :
-                                   (${aluno.status == 'Inativo'} ? 'badge-danger' :
-                                   (${aluno.status == 'Trancado'} ? 'badge-warning' : 'badge-info'))">
+                          th:classappend="${aluno.status == 'Ativo'} ? 'badge-success' :
+                                       (${aluno.status == 'Inativo'} ? 'badge-danger' :
+                                       (${aluno.status == 'Trancado'} ? 'badge-warning' : 'badge-info'))">
                     </span>
                 </div>
             </div>
             
             <div class="info-card">
-                <h3>Informações do Sistema</h3>
+                <h3>⚙️ Informações do Sistema</h3>
                 <div class="detalhes-item">
                     <strong>Data de Cadastro:</strong>
                     <span th:text="${#temporals.format(aluno.dataCriacao, 'dd/MM/yyyy HH:mm')}"></span>
@@ -293,7 +294,7 @@
                 </div>
                 <div class="detalhes-item">
                     <strong>ID no Sistema:</strong>
-                    <span th:text="${aluno.id}" style="font-family: monospace;"></span>
+                    <span th:text="${aluno.id}" style="font-family: monospace; color: #666;"></span>
                 </div>
             </div>
             
@@ -303,21 +304,25 @@
                     Editar Aluno
                 </button>
                 
-               
+                <button class="btn-delete" th:onclick="'confirmarDelete(${aluno.id}, \"' + ${aluno.nomeAluno} + '\")'">
+                    <ion-icon name="trash"></ion-icon>
+                    Excluir Aluno
+                </button>
                 
-                <button class="btn-back" th:onclick="'window.location.href=\'/home\''">
+                <a href="/home" class="btn-back">
                     <ion-icon name="arrow-back"></ion-icon>
                     Voltar para Lista
-                </button>
+                </a>
             </div>
         </div>
         
         <div th:unless="${aluno}" class="no-data">
-            <p>Aluno não encontrado.</p>
-            <button class="btn-back" th:onclick="'window.location.href=\'/home\''">
+            <h3>❌ Aluno não encontrado</h3>
+            <p>O aluno solicitado não foi encontrado no sistema.</p>
+            <a href="/home" class="btn-back" style="display: inline-flex; width: auto;">
                 <ion-icon name="arrow-back"></ion-icon>
                 Voltar para Lista
-            </button>
+            </a>
         </div>
     </div>
 </div>
@@ -328,11 +333,10 @@
 
 <script>
     function confirmarDelete(alunoId, alunoNome) {
-        if (confirm('Tem certeza que deseja deletar o aluno "' + alunoNome + '"?')) {
+        if (confirm('Tem certeza que deseja excluir o aluno "' + alunoNome + '"?\n\nEsta ação não pode ser desfeita.')) {
             window.location.href = '/alunos/delete/' + alunoId;
         }
     }
 </script>
 </body>
->>>>>>> 9e93ba123b7ce12703712f423d83b350b9cc1f36
 </html>
