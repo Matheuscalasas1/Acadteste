@@ -17,65 +17,65 @@ MySQL - Banco de dados relacional
 Maven - Gerenciamento de dependências
 
 Frontend
-HTML5 - Estrutura das páginas
+- HTML5 - Estrutura das páginas
 
-CSS3 - Estilização e design responsivo
+- CSS3 - Estilização e design responsivo
 
-JavaScript - Interatividade e validações
+- JavaScript - Interatividade e validações
 
-Thymeleaf - Template engine
+- Thymeleaf - Template engine
 
-Chart.js - Gráficos e visualizações
+- Chart.js - Gráficos e visualizações
 
-IonIcons - Biblioteca de ícones
+- IonIcons - Biblioteca de ícones
 
-Font Awesome - Ícones adicionais
+- Font Awesome - Ícones adicionais
 
 <h3>Funcionalidades Principais</h3>
 👤 Autenticação e Segurança
-Login seguro com Spring Security
+- Login seguro com Spring Security
 
-Registro de coordenadores com validação de email
+- Registro de coordenadores com validação de email
 
-Criptografia de senhas com BCrypt
+- Criptografia de senhas com BCrypt
 
-Controle de sessões e logout seguro
+- Controle de sessões e logout seguro
 
 🎓 Gestão de Alunos
-Cadastro completo de alunos com dados pessoais e acadêmicos
+- Cadastro completo de alunos com dados pessoais e acadêmicos
 
-Matrícula automática com sistema sequencial por ano
+- Matrícula automática com sistema sequencial por ano
 
-Edição e atualização de informações dos alunos
+- Edição e atualização de informações dos alunos
 
-Exclusão segura com confirmação
+- Exclusão segura com confirmação
 
-Visualização detalhada de cada aluno
+- Visualização detalhada de cada aluno
 
-Status acadêmico (Ativo, Inativo, Trancado, Formado)
+- Status acadêmico (Ativo, Inativo, Trancado, Formado)
 
 📊 Relatórios e Analytics
-Dashboard interativo com gráficos
+- Dashboard interativo com gráficos
 
-Distribuição por curso (gráfico de pizza)
+- Distribuição por curso (gráfico de pizza)
 
-Análise por turno (gráfico de barras)
+- Análise por turno (gráfico de barras)
 
-Status dos alunos (gráfico de doughnut)
+- Status dos alunos (gráfico de doughnut)
 
-Evolução mensal de matrículas
+- Evolução mensal de matrículas
 
-Filtros por mês e ano
+- Filtros por mês e ano
 
-Estatísticas em tempo real
+- Estatísticas em tempo real
 
 🎨 Interface do Usuário
-Design responsivo para todos os dispositivos
+- Design responsivo para todos os dispositivos
 
-Navegação intuitiva entre seções
+- Navegação intuitiva entre seções
 
-Validações em tempo real nos formulários
+- Validações em tempo real nos formulários
 
-Mensagens de feedback (sucesso/erro)
+- Mensagens de feedback (sucesso/erro)
 
-Loading states durante operações
+- Loading states durante operações
