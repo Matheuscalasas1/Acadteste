@@ -30,18 +30,19 @@ public class CoordenadorService {
      * @return O objeto Coordenador salvo.
      * @throws IllegalStateException se o email já estiver cadastrado.
      */
-   public Coordenador salvarCoordenador(Coordenador coordenador) {
-    // 1. VERIFICAÇÃO DE EMAIL DUPLICADO - CORRIGIDO
-    Optional<Coordenador> coordenadorExistente = coordenadorRepository.findByEmail(coordenador.getEmail());
-    if (coordenadorExistente.isPresent()) {
-        throw new IllegalStateException("O e-mail '" + coordenador.getEmail() + "' já está cadastrado.");
+    public Coordenador salvarCoordenador(Coordenador coordenador) {
+        // 1. VERIFICAÇÃO DE EMAIL DUPLICADO - CORRIGIDO
+        Optional<Coordenador> coordenadorExistente = coordenadorRepository.findByEmail(coordenador.getEmail());
+        if (coordenadorExistente.isPresent()) {
+            throw new IllegalStateException("O e-mail '" + coordenador.getEmail() + "' já está cadastrado.");
+        }
+
+        // 2. CRIPTOGRAFIA DA SENHA
+        String senhaCriptografada = passwordEncoder.encode(coordenador.getSenha());
+        coordenador.setSenha(senhaCriptografada);
+
+        // 3. DEFINIÇÃO DE DATA DE CRIAÇÃO (já automática pelo @PrePersist)
+        // 4. SALVAMENTO NO BANCO DE DADOS
+        return coordenadorRepository.save(coordenador);
     }
-
-    // 2. CRIPTOGRAFIA DA SENHA
-    String senhaCriptografada = passwordEncoder.encode(coordenador.getSenha());
-    coordenador.setSenha(senhaCriptografada);
-
-    // 3. DEFINIÇÃO DE DATA DE CRIAÇÃO (já automática pelo @PrePersist)
-    // 4. SALVAMENTO NO BANCO DE DADOS
-    return coordenadorRepository.save(coordenador);
-}
+} // ← ESTA CHAVE ESTAVA FALTANDO!
