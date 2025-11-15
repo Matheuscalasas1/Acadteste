@@ -197,3 +197,21 @@ Consultas otimizadas ao banco
 Cache de gráficos
 
 Carregamento assíncrono
+
+
+<h1>Arquitetura e Entidades do AcadSystem</h1>
+<h2>📊 Modelo de Dados</h2>
+<h1>Diagrama de Entidades</h1>
+
+┌─────────────────┐    ┌─────────────────┐
+│   COORDENADOR   │    │     ALUNO       │
+├─────────────────┤    ├─────────────────┤
+│ id (PK)         │    │ id (PK)         │
+│ email (UK)      │    │ nome_aluno      │
+│ senha           │    │ curso           │
+│ nome            │    │ matricula (UK)  │
+│ departamento    │    │ turno           │
+│ data_criacao    │    │ status          │
+└─────────────────┘    │ data_criacao    │
+                       │ data_atualizacao│
+                       └─────────────────┘
