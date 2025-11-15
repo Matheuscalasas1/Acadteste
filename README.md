@@ -81,11 +81,11 @@ Frontend
 - Loading states durante operações
 
 
-📖 Guia de Uso
-Primeiro Acesso
+<h2>📖 Guia de Uso</h2>
+- Primeiro Acesso
 Registro de Coordenador:
 
-Acesse /registro
+- Acesse /registro
 
 Preencha nome, email e senha
 
@@ -95,13 +95,13 @@ Sistema redireciona para login automaticamente
 
 Login no Sistema:
 
-Acesse /login
+- Acesse /login
 
 Use email e senha cadastrados
 
 Será redirecionado para a página inicial
 
-Gestão de Alunos
+- Gestão de Alunos
 Cadastrar Novo Aluno
 Na página inicial, clique em "Adicionar Aluno"
 
@@ -119,7 +119,7 @@ A matrícula é gerada automaticamente
 
 Clique em "Cadastrar Aluno"
 
-Editar Aluno
+- Editar Aluno
 Na lista de alunos, clique em "Atualizar"
 
 Modifique os campos necessários
@@ -128,7 +128,7 @@ A matrícula não pode ser alterada
 
 Clique em "Atualizar Aluno"
 
-Visualizar Detalhes
+- Visualizar Detalhes
 Clique em "Detalhes" na lista de alunos
 
 Veja informações completas incluindo:
@@ -139,14 +139,14 @@ Informações acadêmicas
 
 Datas de criação e atualização
 
-Excluir Aluno
+- Excluir Aluno
 Clique em "Deletar" na lista
 
 Confirme a exclusão no popup
 
 O aluno será removido permanentemente
 
-Relatórios
+- Relatórios
 Acesse a seção de Relatórios através do menu
 
 Use os filtros para personalizar a visualização:
@@ -167,7 +167,7 @@ Evolução mensal
 
 Analise a tabela resumo com porcentagens
 
-🔧 Funcionalidades Técnicas
+<h2>🔧 Funcionalidades Técnicas</h2>
 Sistema de Matrícula Automática
 Geração sequencial por ano (ex: 20250001, 20250002)
 
