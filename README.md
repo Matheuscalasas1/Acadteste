@@ -222,3 +222,7 @@ Carregamento assíncrono
 - status
 - data_criacao
 - data_atualizacao
+
+
+<h1>Diagrama de classe</h1>
+<img width="327" height="569" alt="image" src="https://github.com/user-attachments/assets/da47f05f-24e8-4b3f-87d2-a5bf4039568f" />
