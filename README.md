@@ -2,7 +2,7 @@
 📋 Sobre o Projeto
 O AcadSystem é um sistema completo de gestão acadêmica desenvolvido em Spring Boot que permite o gerenciamento eficiente de alunos, coordenadores e relatórios institucionais. O sistema oferece uma interface moderna e intuitiva para cadastro, edição, visualização e geração de relatórios acadêmicos.
 
-🚀 Tecnologias Utilizadas
+<h3>🚀 Tecnologias Utilizadas> </h3>
 Backend
 Java 17+
 
@@ -31,7 +31,7 @@ IonIcons - Biblioteca de ícones
 
 Font Awesome - Ícones adicionais
 
-Funcionalidades Principais
+<h3>Funcionalidades Principais</h3>
 👤 Autenticação e Segurança
 Login seguro com Spring Security
 
