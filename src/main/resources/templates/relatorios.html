@@ -1,0 +1,986 @@
+<<<<<<< HEAD
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatórios - AcadSystem</title>
+    <link rel="stylesheet" th:href="@{/home.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- IonIcons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    
+    <style>
+        .relatorio-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .grafico-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .tabela-card {
+            grid-column: 1 / -1;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .estatisticas {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .estatistica-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            min-width: 120px;
+            flex: 1;
+            min-width: 100px;
+        }
+        
+        .numero {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .label {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+        
+        .filtros {
+            background: #f8f9fa;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+        
+        .filtros form {
+            display: flex;
+            gap: 15px;
+            align-items: end;
+            flex-wrap: wrap;
+        }
+        
+        .filtros label {
+            display: flex;
+            flex-direction: column;
+            font-weight: 500;
+            flex: 1;
+            min-width: 150px;
+        }
+        
+        .filtros select, .filtros input {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-top: 5px;
+        }
+        
+        .btn-gerar {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        
+        .btn-gerar:hover {
+            background: #0056b3;
+        }
+        
+        .nav-relatorios {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .btn-voltar {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .btn-voltar:hover {
+            background: #545b62;
+            color: white;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .relatorio-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .grafico-card {
+                padding: 15px;
+            }
+            
+            .nav-relatorios {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .filtros form {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .filtros label {
+                min-width: auto;
+            }
+            
+            .estatisticas {
+                flex-direction: column;
+            }
+            
+            .estatistica-item {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 10px;
+            }
+            
+            .grafico-card {
+                padding: 10px;
+            }
+            
+            .filtros {
+                padding: 15px;
+            }
+            
+            .numero {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- HEADER SIMPLES (sem fragment) -->
+<header>
+    <nav class="navbar">
+        <div class="nav-group">
+            <a class="nav-link" href="/home">
+                <ion-icon name="home"></ion-icon>
+                <span class="nav-text">Página inicial</span>
+            </a>
+            <a class="nav-link active" href="/relatorios">
+                <ion-icon name="bar-chart"></ion-icon>
+                <span class="nav-text">Relatórios</span>
+            </a>
+        </div>
+        <a class="nav-link nav-sair" href="/logout">
+            <ion-icon name="log-out"></ion-icon>
+            <span class="nav-text">Sair</span>
+        </a>
+    </nav>
+</header>
+
+<div class="container">
+    <div class="nav-relatorios">
+        <h1>📊 Relatórios Acadêmicos</h1>
+        <a href="/home" class="btn-voltar">
+            <ion-icon name="arrow-back"></ion-icon>
+            Voltar
+        </a>
+    </div>
+    
+    <!-- Filtros -->
+    <div class="filtros">
+        <form th:action="@{/relatorios}" method="get">
+            <label>
+                Mês:
+                <select name="mes">
+                    <option value="">Todos os meses</option>
+                    <option value="1" th:selected="${mes == 1}">Jan</option>
+                    <option value="2" th:selected="${mes == 2}">Fev</option>
+                    <option value="3" th:selected="${mes == 3}">Mar</option>
+                    <option value="4" th:selected="${mes == 4}">Abr</option>
+                    <option value="5" th:selected="${mes == 5}">Mai</option>
+                    <option value="6" th:selected="${mes == 6}">Jun</option>
+                    <option value="7" th:selected="${mes == 7}">Jul</option>
+                    <option value="8" th:selected="${mes == 8}">Ago</option>
+                    <option value="9" th:selected="${mes == 9}">Set</option>
+                    <option value="10" th:selected="${mes == 10}">Out</option>
+                    <option value="11" th:selected="${mes == 11}">Nov</option>
+                    <option value="12" th:selected="${mes == 12}">Dez</option>
+                </select>
+            </label>
+            
+            <label>
+                Ano:
+                <input type="number" name="ano" th:value="${ano != null ? ano : '2024'}" min="2020" max="2030">
+            </label>
+            
+            <button type="submit" class="btn-gerar">
+                <ion-icon name="refresh"></ion-icon>
+                Atualizar
+            </button>
+        </form>
+    </div>
+
+    <!-- Estatísticas -->
+    <div class="estatisticas">
+        <div class="estatistica-item">
+            <span class="numero" th:text="${totalAlunos != null ? totalAlunos : '0'}">0</span>
+            <span class="label">Total Alunos</span>
+        </div>
+        <div class="estatistica-item">
+            <span class="numero" th:text="${alunosAtivos != null ? alunosAtivos : '0'}">0</span>
+            <span class="label">Alunos Ativos</span>
+        </div>
+        <div class="estatistica-item">
+            <span class="numero" th:text="${cursosCount != null ? cursosCount : '0'}">0</span>
+            <span class="label">Cursos</span>
+        </div>
+    </div>
+
+    <!-- Grid de Gráficos -->
+    <div class="relatorio-container">
+        
+        <!-- Gráfico de Pizza - Alunos por Curso -->
+        <div class="grafico-card">
+            <h3>🎯 Distribuição por Curso</h3>
+            <canvas id="graficoCurso" width="400" height="300"></canvas>
+        </div>
+
+        <!-- Gráfico de Barras - Alunos por Turno -->
+        <div class="grafico-card">
+            <h3>📊 Alunos por Turno</h3>
+            <canvas id="graficoTurno" width="400" height="300"></canvas>
+        </div>
+
+        <!-- Gráfico de Status -->
+        <div class="grafico-card">
+            <h3>📈 Status dos Alunos</h3>
+            <canvas id="graficoStatus" width="400" height="300"></canvas>
+        </div>
+
+        <!-- Gráfico de Evolução (placeholder) -->
+        <div class="grafico-card">
+            <h3>📅 Evolução Mensal</h3>
+            <canvas id="graficoEvolucao" width="400" height="300"></canvas>
+        </div>
+
+        <!-- Tabela de Resumo -->
+        <div class="tabela-card">
+            <h3>📋 Resumo por Curso</h3>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Curso</th>
+                            <th>Total</th>
+                            <th>%</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="entry : ${alunosPorCurso != null ? alunosPorCurso : {}}">
+                            <td th:text="${entry.key}">Curso</td>
+                            <td th:text="${entry.value}">0</td>
+                            <td th:text="${totalAlunos != null && totalAlunos > 0 ? #numbers.formatDecimal((entry.value / totalAlunos) * 100, 1, 1) : '0.0'} + '%'">0%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>© Sistema Escolar 2025</p>
+</footer>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    // Dados para os gráficos (usando Thymeleaf)
+    const alunosPorCurso = /*[[${alunosPorCurso}]]*/ {};
+    const alunosPorTurno = /*[[${alunosPorTurno}]]*/ {};
+    const alunosPorStatus = /*[[${alunosPorStatus}]]*/ {};
+    
+    // Função para converter Map em arrays para Chart.js
+    function mapToChartData(mapData) {
+        if (!mapData || typeof mapData !== 'object' || Object.keys(mapData).length === 0) {
+            return { 
+                labels: ['Sem dados'], 
+                data: [1] 
+            };
+        }
+        
+        const labels = Object.keys(mapData);
+        const data = Object.values(mapData);
+        return { labels, data };
+    }
+
+    // Função para definir cores baseadas no status
+    function getCoresPorStatus(labels) {
+        const coresPorStatus = [];
+        
+        labels.forEach((label, index) => {
+            const labelLower = label.toLowerCase().trim();
+            
+            if (labelLower === 'inativo') {
+                coresPorStatus.push('#FF0000');
+            } else if (labelLower === 'ativo') {
+                coresPorStatus.push('#28a745');
+            } else if (labelLower === 'trancado') {
+                coresPorStatus.push('#ffc107');
+            } else if (labelLower === 'formado') {
+                coresPorStatus.push('#007bff');
+            } else {
+                const coresAlternadas = ['#FF0000', '#28a745', '#ffc107', '#007bff'];
+                coresPorStatus.push(coresAlternadas[index % coresAlternadas.length]);
+            }
+        });
+        
+        return coresPorStatus;
+    }
+    
+    // Aguardar o DOM carregar completamente
+    document.addEventListener('DOMContentLoaded', function() {
+        // Configuração responsiva para Chart.js
+        Chart.defaults.font.size = window.innerWidth < 768 ? 10 : 12;
+        
+        // Gráfico de Pizza - Alunos por Curso
+        const ctxCurso = document.getElementById('graficoCurso');
+        if (ctxCurso) {
+            const cursoData = mapToChartData(alunosPorCurso);
+            new Chart(ctxCurso, {
+                type: 'pie',
+                data: {
+                    labels: cursoData.labels,
+                    datasets: [{
+                        data: cursoData.data,
+                        backgroundColor: [
+                            '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0',
+                            '#9966FF', '#FF9F40', '#FF6384', '#C9CBCF'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: window.innerWidth < 768 ? 'bottom' : 'right'
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Gráfico de Barras - Alunos por Turno
+        const ctxTurno = document.getElementById('graficoTurno');
+        if (ctxTurno) {
+            const turnoData = mapToChartData(alunosPorTurno);
+            new Chart(ctxTurno, {
+                type: 'bar',
+                data: {
+                    labels: turnoData.labels,
+                    datasets: [{
+                        label: 'Quantidade',
+                        data: turnoData.data,
+                        backgroundColor: ['#4BC0C0', '#FF9F40', '#9966FF', '#FF6384', '#36A2EB']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        }
+        
+        // Gráfico de Status
+        const ctxStatus = document.getElementById('graficoStatus');
+        if (ctxStatus) {
+            const statusData = mapToChartData(alunosPorStatus);
+            const coresForcadas = getCoresPorStatus(statusData.labels);
+            
+            new Chart(ctxStatus, {
+                type: 'doughnut',
+                data: {
+                    labels: statusData.labels,
+                    datasets: [{
+                        data: statusData.data,
+                        backgroundColor: coresForcadas,
+                        borderColor: coresForcadas.map(cor => cor),
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: window.innerWidth < 768 ? 'bottom' : 'right'
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Gráfico de Evolução
+        const ctxEvolucao = document.getElementById('graficoEvolucao');
+        if (ctxEvolucao) {
+            new Chart(ctxEvolucao, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                    datasets: [{
+                        label: 'Novas Matrículas',
+                        data: [12, 19, 8, 15, 12, 18, 14, 16, 11, 13, 15, 17],
+                        borderColor: '#36A2EB',
+                        backgroundColor: 'rgba(54, 162, 235, 0.1)',
+                        tension: 0.1,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        }
+    });
+
+    // Redimensionar gráficos quando a janela for redimensionada
+    window.addEventListener('resize', function() {
+        Chart.defaults.font.size = window.innerWidth < 768 ? 10 : 12;
+    });
+    /*]]>*/
+</script>
+
+</body>
+=======
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatórios - AcadSystem</title>
+    <link rel="stylesheet" th:href="@{/home.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- IonIcons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    
+    <style>
+        .relatorio-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .grafico-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .tabela-card {
+            grid-column: 1 / -1;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .estatisticas {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .estatistica-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            min-width: 120px;
+            flex: 1;
+            min-width: 100px;
+        }
+        
+        .numero {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .label {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+        
+        .filtros {
+            background: #f8f9fa;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+        
+        .filtros form {
+            display: flex;
+            gap: 15px;
+            align-items: end;
+            flex-wrap: wrap;
+        }
+        
+        .filtros label {
+            display: flex;
+            flex-direction: column;
+            font-weight: 500;
+            flex: 1;
+            min-width: 150px;
+        }
+        
+        .filtros select, .filtros input {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-top: 5px;
+        }
+        
+        .btn-gerar {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        
+        .btn-gerar:hover {
+            background: #0056b3;
+        }
+        
+        .nav-relatorios {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .btn-voltar {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .btn-voltar:hover {
+            background: #545b62;
+            color: white;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .relatorio-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .grafico-card {
+                padding: 15px;
+            }
+            
+            .nav-relatorios {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .filtros form {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .filtros label {
+                min-width: auto;
+            }
+            
+            .estatisticas {
+                flex-direction: column;
+            }
+            
+            .estatistica-item {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 10px;
+            }
+            
+            .grafico-card {
+                padding: 10px;
+            }
+            
+            .filtros {
+                padding: 15px;
+            }
+            
+            .numero {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- HEADER SIMPLES (sem fragment) -->
+<header>
+    <nav class="navbar">
+        <div class="nav-group">
+            <a class="nav-link" href="/home">
+                <ion-icon name="home"></ion-icon>
+                <span class="nav-text">Página inicial</span>
+            </a>
+            <a class="nav-link active" href="/relatorios">
+                <ion-icon name="bar-chart"></ion-icon>
+                <span class="nav-text">Relatórios</span>
+            </a>
+        </div>
+        <a class="nav-link nav-sair" href="/logout">
+            <ion-icon name="log-out"></ion-icon>
+            <span class="nav-text">Sair</span>
+        </a>
+    </nav>
+</header>
+
+<div class="container">
+    <div class="nav-relatorios">
+        <h1>📊 Relatórios Acadêmicos</h1>
+        <a href="/home" class="btn-voltar">
+            <ion-icon name="arrow-back"></ion-icon>
+            Voltar
+        </a>
+    </div>
+    
+    <!-- Filtros -->
+    <div class="filtros">
+        <form th:action="@{/relatorios}" method="get">
+            <label>
+                Mês:
+                <select name="mes">
+                    <option value="">Todos os meses</option>
+                    <option value="1" th:selected="${mes == 1}">Jan</option>
+                    <option value="2" th:selected="${mes == 2}">Fev</option>
+                    <option value="3" th:selected="${mes == 3}">Mar</option>
+                    <option value="4" th:selected="${mes == 4}">Abr</option>
+                    <option value="5" th:selected="${mes == 5}">Mai</option>
+                    <option value="6" th:selected="${mes == 6}">Jun</option>
+                    <option value="7" th:selected="${mes == 7}">Jul</option>
+                    <option value="8" th:selected="${mes == 8}">Ago</option>
+                    <option value="9" th:selected="${mes == 9}">Set</option>
+                    <option value="10" th:selected="${mes == 10}">Out</option>
+                    <option value="11" th:selected="${mes == 11}">Nov</option>
+                    <option value="12" th:selected="${mes == 12}">Dez</option>
+                </select>
+            </label>
+            
+            <label>
+                Ano:
+                <input type="number" name="ano" th:value="${ano != null ? ano : '2024'}" min="2020" max="2030">
+            </label>
+            
+            <button type="submit" class="btn-gerar">
+                <ion-icon name="refresh"></ion-icon>
+                Atualizar
+            </button>
+        </form>
+    </div>
+
+    <!-- Estatísticas -->
+    <div class="estatisticas">
+        <div class="estatistica-item">
+            <span class="numero" th:text="${totalAlunos != null ? totalAlunos : '0'}">0</span>
+            <span class="label">Total Alunos</span>
+        </div>
+        <div class="estatistica-item">
+            <span class="numero" th:text="${alunosAtivos != null ? alunosAtivos : '0'}">0</span>
+            <span class="label">Alunos Ativos</span>
+        </div>
+        <div class="estatistica-item">
+            <span class="numero" th:text="${cursosCount != null ? cursosCount : '0'}">0</span>
+            <span class="label">Cursos</span>
+        </div>
+    </div>
+
+    <!-- Grid de Gráficos -->
+    <div class="relatorio-container">
+        
+        <!-- Gráfico de Pizza - Alunos por Curso -->
+        <div class="grafico-card">
+            <h3>🎯 Distribuição por Curso</h3>
+            <canvas id="graficoCurso" width="400" height="300"></canvas>
+        </div>
+
+        <!-- Gráfico de Barras - Alunos por Turno -->
+        <div class="grafico-card">
+            <h3>📊 Alunos por Turno</h3>
+            <canvas id="graficoTurno" width="400" height="300"></canvas>
+        </div>
+
+        <!-- Gráfico de Status -->
+        <div class="grafico-card">
+            <h3>📈 Status dos Alunos</h3>
+            <canvas id="graficoStatus" width="400" height="300"></canvas>
+        </div>
+
+        <!-- Gráfico de Evolução (placeholder) -->
+        <div class="grafico-card">
+            <h3>📅 Evolução Mensal</h3>
+            <canvas id="graficoEvolucao" width="400" height="300"></canvas>
+        </div>
+
+        <!-- Tabela de Resumo -->
+        <div class="tabela-card">
+            <h3>📋 Resumo por Curso</h3>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Curso</th>
+                            <th>Total</th>
+                            <th>%</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="entry : ${alunosPorCurso != null ? alunosPorCurso : {}}">
+                            <td th:text="${entry.key}">Curso</td>
+                            <td th:text="${entry.value}">0</td>
+                            <td th:text="${totalAlunos != null && totalAlunos > 0 ? #numbers.formatDecimal((entry.value / totalAlunos) * 100, 1, 1) : '0.0'} + '%'">0%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>© Sistema Escolar 2025</p>
+</footer>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    // Dados para os gráficos (usando Thymeleaf)
+    const alunosPorCurso = /*[[${alunosPorCurso}]]*/ {};
+    const alunosPorTurno = /*[[${alunosPorTurno}]]*/ {};
+    const alunosPorStatus = /*[[${alunosPorStatus}]]*/ {};
+    
+    // Função para converter Map em arrays para Chart.js
+    function mapToChartData(mapData) {
+        if (!mapData || typeof mapData !== 'object' || Object.keys(mapData).length === 0) {
+            return { 
+                labels: ['Sem dados'], 
+                data: [1] 
+            };
+        }
+        
+        const labels = Object.keys(mapData);
+        const data = Object.values(mapData);
+        return { labels, data };
+    }
+
+    // Função para definir cores baseadas no status
+    function getCoresPorStatus(labels) {
+        const coresPorStatus = [];
+        
+        labels.forEach((label, index) => {
+            const labelLower = label.toLowerCase().trim();
+            
+            if (labelLower === 'inativo') {
+                coresPorStatus.push('#FF0000');
+            } else if (labelLower === 'ativo') {
+                coresPorStatus.push('#28a745');
+            } else if (labelLower === 'trancado') {
+                coresPorStatus.push('#ffc107');
+            } else if (labelLower === 'formado') {
+                coresPorStatus.push('#007bff');
+            } else {
+                const coresAlternadas = ['#FF0000', '#28a745', '#ffc107', '#007bff'];
+                coresPorStatus.push(coresAlternadas[index % coresAlternadas.length]);
+            }
+        });
+        
+        return coresPorStatus;
+    }
+    
+    // Aguardar o DOM carregar completamente
+    document.addEventListener('DOMContentLoaded', function() {
+        // Configuração responsiva para Chart.js
+        Chart.defaults.font.size = window.innerWidth < 768 ? 10 : 12;
+        
+        // Gráfico de Pizza - Alunos por Curso
+        const ctxCurso = document.getElementById('graficoCurso');
+        if (ctxCurso) {
+            const cursoData = mapToChartData(alunosPorCurso);
+            new Chart(ctxCurso, {
+                type: 'pie',
+                data: {
+                    labels: cursoData.labels,
+                    datasets: [{
+                        data: cursoData.data,
+                        backgroundColor: [
+                            '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0',
+                            '#9966FF', '#FF9F40', '#FF6384', '#C9CBCF'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: window.innerWidth < 768 ? 'bottom' : 'right'
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Gráfico de Barras - Alunos por Turno
+        const ctxTurno = document.getElementById('graficoTurno');
+        if (ctxTurno) {
+            const turnoData = mapToChartData(alunosPorTurno);
+            new Chart(ctxTurno, {
+                type: 'bar',
+                data: {
+                    labels: turnoData.labels,
+                    datasets: [{
+                        label: 'Quantidade',
+                        data: turnoData.data,
+                        backgroundColor: ['#4BC0C0', '#FF9F40', '#9966FF', '#FF6384', '#36A2EB']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        }
+        
+        // Gráfico de Status
+        const ctxStatus = document.getElementById('graficoStatus');
+        if (ctxStatus) {
+            const statusData = mapToChartData(alunosPorStatus);
+            const coresForcadas = getCoresPorStatus(statusData.labels);
+            
+            new Chart(ctxStatus, {
+                type: 'doughnut',
+                data: {
+                    labels: statusData.labels,
+                    datasets: [{
+                        data: statusData.data,
+                        backgroundColor: coresForcadas,
+                        borderColor: coresForcadas.map(cor => cor),
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: window.innerWidth < 768 ? 'bottom' : 'right'
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Gráfico de Evolução
+        const ctxEvolucao = document.getElementById('graficoEvolucao');
+        if (ctxEvolucao) {
+            new Chart(ctxEvolucao, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                    datasets: [{
+                        label: 'Novas Matrículas',
+                        data: [12, 19, 8, 15, 12, 18, 14, 16, 11, 13, 15, 17],
+                        borderColor: '#36A2EB',
+                        backgroundColor: 'rgba(54, 162, 235, 0.1)',
+                        tension: 0.1,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        }
+    });
+
+    // Redimensionar gráficos quando a janela for redimensionada
+    window.addEventListener('resize', function() {
+        Chart.defaults.font.size = window.innerWidth < 768 ? 10 : 12;
+    });
+    /*]]>*/
+</script>
+
+</body>
+>>>>>>> 9e93ba123b7ce12703712f423d83b350b9cc1f36
+</html>

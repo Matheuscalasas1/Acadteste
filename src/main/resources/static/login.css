@@ -1,0 +1,574 @@
+<<<<<<< HEAD
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #000;
+  padding: 1rem;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* Mobile First - Empilha verticalmente */
+.left-side, .right-side {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 1rem;
+}
+
+.left-side {
+  background: #b0e0e6;
+  order: 2;
+  min-height: 40vh;
+}
+
+.right-side {
+  background: #000;
+  order: 1;
+  min-height: 60vh;
+}
+
+.left-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.ilustracao {
+  max-width: 80%;
+  height: auto;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 360px;
+  padding: 2rem 1.5rem;
+  background: rgba(20, 20, 20, 0.9);
+  border: 2px solid #333;
+  border-radius: 12px;
+  transition: .4s;
+  box-shadow: 0 0 10px #000;
+}
+
+.logo {
+  width: 70px;
+  height: auto;
+  display: block;
+  margin: 0 auto 10px auto;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+h2 {
+  font-size: 1.6em;
+  text-align: center;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+.input-box {
+  position: relative;
+  width: 100%;
+  margin: 1rem 0;
+}
+
+.input-box input {
+  width: 100%;
+  height: 45px;
+  background: transparent;
+  border: 1.5px solid #333;
+  outline: none;
+  border-radius: 6px;
+  font-size: 0.95em;
+  color: #fff;
+  padding: 0 15px 0 45px;
+  transition: .3s;
+}
+
+.input-box input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.input-box .icon {
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  transform: translateY(-50%);
+  color: #aaa;
+  font-size: 1.1em;
+  transition: .3s;
+}
+
+.eye-icon {
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  color: #aaa;
+  font-size: 1.1em;
+  cursor: pointer;
+  transition: .3s;
+  left: auto !important;
+}
+
+button {
+  width: 100%;
+  height: 45px;
+  background: #0ef;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: 600;
+  color: #000;
+  transition: .3s;
+  margin-top: 1rem;
+}
+
+.register-link {
+  font-size: .85em;
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.register-link p {
+  color: #fff;
+}
+
+.register-link p a {
+  color: #0ef;
+  text-decoration: none;
+  font-weight: 600;
+  margin-left: 4px;
+  transition: .3s;
+}
+
+/* Efeitos hover */
+.wrapper:hover {
+  border-color: #0ef;
+  box-shadow: 0 0 20px #0ef, inset 0 0 20px #0ef;
+}
+
+.wrapper:hover .input-box .icon,
+.wrapper:hover .eye-icon {
+  color: #0ef;
+}
+
+button:hover {
+  background: #00d0d0;
+  box-shadow: 0 0 10px #0ef, 0 0 10px #0ef;
+}
+
+.register-link p a:hover {
+  text-decoration: underline;
+}
+
+.eye-icon:hover {
+  color: #0ef;
+}
+
+.input-box input:focus {
+  border-color: #0ef;
+  box-shadow: 0 0 5px rgba(0, 238, 255, 0.5);
+}
+
+/* Alertas */
+.alerta-form {
+  width: 100%;
+  padding: 12px;
+  text-align: center;
+  font-weight: bold;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  font-size: 0.9em;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.alerta-sucesso {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.alerta-erro {
+  background-color: #f44336;
+  color: white;
+}
+
+/* Mensagens de erro */
+.error-message {
+  color: #ff4444;
+  font-size: 0.8em;
+  margin-top: 5px;
+  display: none;
+  text-align: left;
+  padding-left: 5px;
+}
+
+.input-box.error input {
+  border-color: #ff4444 !important;
+  box-shadow: 0 0 5px rgba(255, 68, 68, 0.5);
+}
+
+.input-box.error .icon {
+  color: #ff4444 !important;
+}
+
+/* Tablet */
+@media (min-width: 768px) {
+  .container {
+    flex-direction: row;
+    min-height: 100vh;
+  }
+  
+  .left-side, .right-side {
+    width: 50%;
+    height: 100vh;
+  }
+  
+  .left-side {
+    order: 1;
+  }
+  
+  .right-side {
+    order: 2;
+  }
+  
+  .left-title {
+    font-size: 2.5rem;
+  }
+  
+  .ilustracao {
+    max-width: 65%;
+  }
+  
+  .wrapper {
+    padding: 2.5rem 2rem;
+  }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .left-title {
+    font-size: 3rem;
+  }
+  
+  .wrapper {
+    max-width: 420px;
+    padding: 3rem 2.5rem;
+  }
+  
+  h2 {
+    font-size: 1.8em;
+  }
+=======
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #000;
+  padding: 1rem;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* Mobile First - Empilha verticalmente */
+.left-side, .right-side {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 1rem;
+}
+
+.left-side {
+  background: #b0e0e6;
+  order: 2;
+  min-height: 40vh;
+}
+
+.right-side {
+  background: #000;
+  order: 1;
+  min-height: 60vh;
+}
+
+.left-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.ilustracao {
+  max-width: 80%;
+  height: auto;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 360px;
+  padding: 2rem 1.5rem;
+  background: rgba(20, 20, 20, 0.9);
+  border: 2px solid #333;
+  border-radius: 12px;
+  transition: .4s;
+  box-shadow: 0 0 10px #000;
+}
+
+.logo {
+  width: 70px;
+  height: auto;
+  display: block;
+  margin: 0 auto 10px auto;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+h2 {
+  font-size: 1.6em;
+  text-align: center;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+.input-box {
+  position: relative;
+  width: 100%;
+  margin: 1rem 0;
+}
+
+.input-box input {
+  width: 100%;
+  height: 45px;
+  background: transparent;
+  border: 1.5px solid #333;
+  outline: none;
+  border-radius: 6px;
+  font-size: 0.95em;
+  color: #fff;
+  padding: 0 15px 0 45px;
+  transition: .3s;
+}
+
+.input-box input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.input-box .icon {
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  transform: translateY(-50%);
+  color: #aaa;
+  font-size: 1.1em;
+  transition: .3s;
+}
+
+.eye-icon {
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  color: #aaa;
+  font-size: 1.1em;
+  cursor: pointer;
+  transition: .3s;
+  left: auto !important;
+}
+
+button {
+  width: 100%;
+  height: 45px;
+  background: #0ef;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: 600;
+  color: #000;
+  transition: .3s;
+  margin-top: 1rem;
+}
+
+.register-link {
+  font-size: .85em;
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.register-link p {
+  color: #fff;
+}
+
+.register-link p a {
+  color: #0ef;
+  text-decoration: none;
+  font-weight: 600;
+  margin-left: 4px;
+  transition: .3s;
+}
+
+/* Efeitos hover */
+.wrapper:hover {
+  border-color: #0ef;
+  box-shadow: 0 0 20px #0ef, inset 0 0 20px #0ef;
+}
+
+.wrapper:hover .input-box .icon,
+.wrapper:hover .eye-icon {
+  color: #0ef;
+}
+
+button:hover {
+  background: #00d0d0;
+  box-shadow: 0 0 10px #0ef, 0 0 10px #0ef;
+}
+
+.register-link p a:hover {
+  text-decoration: underline;
+}
+
+.eye-icon:hover {
+  color: #0ef;
+}
+
+.input-box input:focus {
+  border-color: #0ef;
+  box-shadow: 0 0 5px rgba(0, 238, 255, 0.5);
+}
+
+/* Alertas */
+.alerta-form {
+  width: 100%;
+  padding: 12px;
+  text-align: center;
+  font-weight: bold;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  font-size: 0.9em;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.alerta-sucesso {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.alerta-erro {
+  background-color: #f44336;
+  color: white;
+}
+
+/* Mensagens de erro */
+.error-message {
+  color: #ff4444;
+  font-size: 0.8em;
+  margin-top: 5px;
+  display: none;
+  text-align: left;
+  padding-left: 5px;
+}
+
+.input-box.error input {
+  border-color: #ff4444 !important;
+  box-shadow: 0 0 5px rgba(255, 68, 68, 0.5);
+}
+
+.input-box.error .icon {
+  color: #ff4444 !important;
+}
+
+/* Tablet */
+@media (min-width: 768px) {
+  .container {
+    flex-direction: row;
+    min-height: 100vh;
+  }
+  
+  .left-side, .right-side {
+    width: 50%;
+    height: 100vh;
+  }
+  
+  .left-side {
+    order: 1;
+  }
+  
+  .right-side {
+    order: 2;
+  }
+  
+  .left-title {
+    font-size: 2.5rem;
+  }
+  
+  .ilustracao {
+    max-width: 65%;
+  }
+  
+  .wrapper {
+    padding: 2.5rem 2rem;
+  }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .left-title {
+    font-size: 3rem;
+  }
+  
+  .wrapper {
+    max-width: 420px;
+    padding: 3rem 2.5rem;
+  }
+  
+  h2 {
+    font-size: 1.8em;
+  }
+>>>>>>> 9e93ba123b7ce12703712f423d83b350b9cc1f36
+}

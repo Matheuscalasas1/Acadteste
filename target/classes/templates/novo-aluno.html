@@ -1,0 +1,410 @@
+<<<<<<< HEAD
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastrar Aluno - AcadSystem</title>
+    <link rel="stylesheet" th:href="@{/novo-aluno.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <!-- IonIcons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+
+<body>
+
+<div class="container">
+    
+    <!-- Lado Esquerdo -->
+    <div class="left-side">
+        <h1 class="left-title">AcadSystem</h1>
+        <img th:src="@{/img/logo-escola.png}" src="/img/logo-escola.png"
+             class="ilustracao" alt="Ilustração da Academia">
+    </div>
+
+    <!-- Lado Direito / Formulário de Cadastro -->
+    <div class="right-side">
+        <div class="wrapper">
+
+            <img th:src="@{/img/conecte-se.png}" src="/img/conecte-se.png" class="logo" alt="Logo de Conexão">
+
+            <h2>Cadastrar Aluno</h2>
+            
+            <!-- Alertas -->
+            <div th:if="${sucesso}" class="alerta-form alerta-sucesso">
+                <p th:text="${sucesso}"></p>
+            </div>
+            <div th:if="${erro}" class="alerta-form alerta-erro">
+                <p th:text="${erro}"></p>
+            </div>
+            
+            <!-- FORMULÁRIO DE CADASTRO -->
+            <form th:action="@{/alunos/salvar}" th:object="${aluno}" method="post" id="formAluno">
+
+                <!-- NOME DO ALUNO -->
+                <div class="input-box">
+                    <span class="icon"><ion-icon name="person"></ion-icon></span>
+                    <input type="text" th:field="*{nomeAluno}" id="nomeAluno" placeholder="Nome do Aluno" required>
+                    <div class="error-message" id="error-nome"></div>
+                </div>
+
+                <!-- CURSO -->
+                <div class="input-box">
+                    <span class="icon"><ion-icon name="school"></ion-icon></span>
+                    <input type="text" th:field="*{curso}" id="curso" placeholder="Curso" required>
+                    <div class="error-message" id="error-curso"></div>
+                </div>
+
+                <!-- MATRÍCULA (APENAS LEITURA) -->
+                <div class="input-box">
+                    <span class="icon"><ion-icon name="card"></ion-icon></span>
+                    <input type="text" th:field="*{matricula}" id="matricula" placeholder="Matrícula" readonly class="readonly-field">
+                    <div class="field-info">Matrícula gerada automaticamente</div>
+                </div>
+
+                <!-- TURNO -->
+                <div class="input-box">
+                    <span class="icon"><ion-icon name="time"></ion-icon></span>
+                    <select th:field="*{turno}" id="turno" class="form-select" required>
+                        <option value="">Selecione o Turno</option>
+                        <option value="Matutino">Matutino</option>
+                        <option value="Vespertino">Vespertino</option>
+                        <option value="Noturno">Noturno</option>
+                    </select>
+                    <div class="error-message" id="error-turno"></div>
+                </div>
+
+                <!-- STATUS -->
+                <div class="input-box">
+                    <span class="icon"><ion-icon name="flag"></ion-icon></span>
+                    <select th:field="*{status}" id="status" class="form-select" required>
+                        <option value="">Selecione o Status</option>
+                        <option value="Ativo">Ativo</option>
+                        <option value="Inativo">Inativo</option>
+                        <option value="Trancado">Trancado</option>
+                        <option value="Formado">Formado</option>
+                    </select>
+                    <div class="error-message" id="error-status"></div>
+                </div>
+
+                <button type="submit">Cadastrar Aluno</button>
+
+                <div class="register-link">
+                    <p><a th:href="@{/home}">← Voltar para Lista de Alunos</a></p>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+<!-- JavaScript para validações -->
+<script>
+    function validarFormulario() {
+        limparErros();
+
+        const nomeAluno = document.getElementById('nomeAluno').value.trim();
+        const curso = document.getElementById('curso').value.trim();
+        const turno = document.getElementById('turno').value;
+        const status = document.getElementById('status').value;
+
+        let valido = true;
+
+        // Validação do Nome
+        if (nomeAluno === '') {
+            mostrarErro('error-nome', 'Por favor, digite o nome do aluno');
+            valido = false;
+        } else if (nomeAluno.length < 2) {
+            mostrarErro('error-nome', 'O nome deve ter pelo menos 2 caracteres');
+            valido = false;
+        }
+
+        // Validação do Curso
+        if (curso === '') {
+            mostrarErro('error-curso', 'Por favor, digite o curso');
+            valido = false;
+        }
+
+        // Validação do Turno
+        if (turno === '') {
+            mostrarErro('error-turno', 'Por favor, selecione o turno');
+            valido = false;
+        }
+
+        // Validação do Status
+        if (status === '') {
+            mostrarErro('error-status', 'Por favor, selecione o status');
+            valido = false;
+        }
+
+        return valido;
+    }
+
+    function mostrarErro(elementId, mensagem) {
+        const elementoErro = document.getElementById(elementId);
+        elementoErro.textContent = mensagem;
+        elementoErro.style.display = 'block';
+        
+        const inputBox = elementoErro.closest('.input-box');
+        inputBox.classList.add('error');
+    }
+
+    function limparErros() {
+        const erros = document.querySelectorAll('.error-message');
+        erros.forEach(erro => {
+            erro.textContent = '';
+            erro.style.display = 'none';
+        });
+
+        const inputBoxes = document.querySelectorAll('.input-box');
+        inputBoxes.forEach(box => {
+            box.classList.remove('error');
+        });
+    }
+
+    // Validação em tempo real
+    document.addEventListener('DOMContentLoaded', function() {
+        const campos = ['nomeAluno', 'curso', 'turno', 'status'];
+        
+        campos.forEach(campo => {
+            const elemento = document.getElementById(campo);
+            if (elemento) {
+                elemento.addEventListener('input', function() {
+                    const erroId = 'error-' + campo;
+                    const erroElement = document.getElementById(erroId);
+                    if (erroElement) {
+                        erroElement.style.display = 'none';
+                        erroElement.textContent = '';
+                    }
+                    
+                    const inputBox = this.closest('.input-box');
+                    inputBox.classList.remove('error');
+                });
+            }
+        });
+
+        // Adicionar validação ao formulário
+        document.getElementById('formAluno').addEventListener('submit', function(e) {
+            if (!validarFormulario()) {
+                e.preventDefault();
+            }
+        });
+
+        // Desabilitar clique no campo de matrícula
+        document.getElementById('matricula').addEventListener('click', function(e) {
+            e.preventDefault();
+            // Opcional: mostrar uma mensagem tooltip
+            console.log('Matrícula é gerada automaticamente e não pode ser alterada');
+        });
+    });
+</script>
+
+</body>
+=======
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastrar Aluno - AcadSystem</title>
+    <link rel="stylesheet" th:href="@{/novo-aluno.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <!-- IonIcons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+
+<body>
+
+<div class="container">
+    
+    <!-- Lado Esquerdo -->
+    <div class="left-side">
+        <h1 class="left-title">AcadSystem</h1>
+        <img th:src="@{/img/logo-escola.png}" src="/img/logo-escola.png"
+             class="ilustracao" alt="Ilustração da Academia">
+    </div>
+
+    <!-- Lado Direito / Formulário de Cadastro -->
+    <div class="right-side">
+        <div class="wrapper">
+
+            <img th:src="@{/img/conecte-se.png}" src="/img/conecte-se.png" class="logo" alt="Logo de Conexão">
+
+            <h2>Cadastrar Aluno</h2>
+            
+            <!-- Alertas -->
+            <div th:if="${sucesso}" class="alerta-form alerta-sucesso">
+                <p th:text="${sucesso}"></p>
+            </div>
+            <div th:if="${erro}" class="alerta-form alerta-erro">
+                <p th:text="${erro}"></p>
+            </div>
+            
+            <!-- FORMULÁRIO DE CADASTRO -->
+            <form th:action="@{/alunos/salvar}" th:object="${aluno}" method="post" id="formAluno">
+
+                <!-- NOME DO ALUNO -->
+                <div class="input-box">
+                    <span class="icon"><ion-icon name="person"></ion-icon></span>
+                    <input type="text" th:field="*{nomeAluno}" id="nomeAluno" placeholder="Nome do Aluno" required>
+                    <div class="error-message" id="error-nome"></div>
+                </div>
+
+                <!-- CURSO -->
+                <div class="input-box">
+                    <span class="icon"><ion-icon name="school"></ion-icon></span>
+                    <input type="text" th:field="*{curso}" id="curso" placeholder="Curso" required>
+                    <div class="error-message" id="error-curso"></div>
+                </div>
+
+                <!-- MATRÍCULA (APENAS LEITURA) -->
+                <div class="input-box">
+                    <span class="icon"><ion-icon name="card"></ion-icon></span>
+                    <input type="text" th:field="*{matricula}" id="matricula" placeholder="Matrícula" readonly class="readonly-field">
+                    <div class="field-info">Matrícula gerada automaticamente</div>
+                </div>
+
+                <!-- TURNO -->
+                <div class="input-box">
+                    <span class="icon"><ion-icon name="time"></ion-icon></span>
+                    <select th:field="*{turno}" id="turno" class="form-select" required>
+                        <option value="">Selecione o Turno</option>
+                        <option value="Matutino">Matutino</option>
+                        <option value="Vespertino">Vespertino</option>
+                        <option value="Noturno">Noturno</option>
+                    </select>
+                    <div class="error-message" id="error-turno"></div>
+                </div>
+
+                <!-- STATUS -->
+                <div class="input-box">
+                    <span class="icon"><ion-icon name="flag"></ion-icon></span>
+                    <select th:field="*{status}" id="status" class="form-select" required>
+                        <option value="">Selecione o Status</option>
+                        <option value="Ativo">Ativo</option>
+                        <option value="Inativo">Inativo</option>
+                        <option value="Trancado">Trancado</option>
+                        <option value="Formado">Formado</option>
+                    </select>
+                    <div class="error-message" id="error-status"></div>
+                </div>
+
+                <button type="submit">Cadastrar Aluno</button>
+
+                <div class="register-link">
+                    <p><a th:href="@{/home}">← Voltar para Lista de Alunos</a></p>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+<!-- JavaScript para validações -->
+<script>
+    function validarFormulario() {
+        limparErros();
+
+        const nomeAluno = document.getElementById('nomeAluno').value.trim();
+        const curso = document.getElementById('curso').value.trim();
+        const turno = document.getElementById('turno').value;
+        const status = document.getElementById('status').value;
+
+        let valido = true;
+
+        // Validação do Nome
+        if (nomeAluno === '') {
+            mostrarErro('error-nome', 'Por favor, digite o nome do aluno');
+            valido = false;
+        } else if (nomeAluno.length < 2) {
+            mostrarErro('error-nome', 'O nome deve ter pelo menos 2 caracteres');
+            valido = false;
+        }
+
+        // Validação do Curso
+        if (curso === '') {
+            mostrarErro('error-curso', 'Por favor, digite o curso');
+            valido = false;
+        }
+
+        // Validação do Turno
+        if (turno === '') {
+            mostrarErro('error-turno', 'Por favor, selecione o turno');
+            valido = false;
+        }
+
+        // Validação do Status
+        if (status === '') {
+            mostrarErro('error-status', 'Por favor, selecione o status');
+            valido = false;
+        }
+
+        return valido;
+    }
+
+    function mostrarErro(elementId, mensagem) {
+        const elementoErro = document.getElementById(elementId);
+        elementoErro.textContent = mensagem;
+        elementoErro.style.display = 'block';
+        
+        const inputBox = elementoErro.closest('.input-box');
+        inputBox.classList.add('error');
+    }
+
+    function limparErros() {
+        const erros = document.querySelectorAll('.error-message');
+        erros.forEach(erro => {
+            erro.textContent = '';
+            erro.style.display = 'none';
+        });
+
+        const inputBoxes = document.querySelectorAll('.input-box');
+        inputBoxes.forEach(box => {
+            box.classList.remove('error');
+        });
+    }
+
+    // Validação em tempo real
+    document.addEventListener('DOMContentLoaded', function() {
+        const campos = ['nomeAluno', 'curso', 'turno', 'status'];
+        
+        campos.forEach(campo => {
+            const elemento = document.getElementById(campo);
+            if (elemento) {
+                elemento.addEventListener('input', function() {
+                    const erroId = 'error-' + campo;
+                    const erroElement = document.getElementById(erroId);
+                    if (erroElement) {
+                        erroElement.style.display = 'none';
+                        erroElement.textContent = '';
+                    }
+                    
+                    const inputBox = this.closest('.input-box');
+                    inputBox.classList.remove('error');
+                });
+            }
+        });
+
+        // Adicionar validação ao formulário
+        document.getElementById('formAluno').addEventListener('submit', function(e) {
+            if (!validarFormulario()) {
+                e.preventDefault();
+            }
+        });
+
+        // Desabilitar clique no campo de matrícula
+        document.getElementById('matricula').addEventListener('click', function(e) {
+            e.preventDefault();
+            // Opcional: mostrar uma mensagem tooltip
+            console.log('Matrícula é gerada automaticamente e não pode ser alterada');
+        });
+    });
+</script>
+
+</body>
+>>>>>>> 9e93ba123b7ce12703712f423d83b350b9cc1f36
+</html>

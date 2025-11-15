@@ -1,0 +1,636 @@
+<<<<<<< HEAD
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #000;
+}
+
+.logo {
+  width: 80px;
+  height: auto;
+  display: block;
+  margin: 0 auto 10px auto;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 420px;
+  padding: 30px 25px;
+  background: rgba(20, 20, 20, 0.9);
+  border: 2px solid #333;
+  border-radius: 12px;
+  transition: .4s;
+  box-shadow: 0 0 10px #000;
+}
+
+.wrapper:hover {
+  border-color: #0ef;
+  box-shadow: 0 0 20px #0ef, inset 0 0 20px #0ef;
+}
+
+h2 {
+  font-size: 1.8em;
+  text-align: center;
+  color: #fff;
+  margin-bottom: 15px;
+}
+
+.input-box {
+  position: relative;
+  width: 100%;
+  margin: 18px 0;
+}
+
+.input-box input, .input-box select {
+  width: 100%;
+  height: 42px;
+  background: transparent;
+  border: 1.5px solid #333;
+  outline: none;
+  border-radius: 6px;
+  font-size: 0.95em;
+  color: #fff;
+  padding: 0 10px 0 38px;
+  transition: .3s;
+}
+
+.input-box input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.input-box .icon {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  color: #aaa;
+  font-size: 1.1em;
+  transition: .3s;
+}
+
+.wrapper:hover .input-box .icon {
+  color: #0ef;
+}
+
+/* Estilo para selects */
+.form-select {
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.form-select option {
+  background: #333;
+  color: #fff;
+}
+
+/* Estilo para campos readonly */
+.readonly-field {
+  background-color: #2a2a2a !important;
+  color: #888 !important;
+  cursor: not-allowed !important;
+  border-color: #444 !important;
+}
+
+.readonly-field:focus {
+  border-color: #444 !important;
+  box-shadow: none !important;
+}
+
+/* Informação do campo */
+.field-info {
+  color: #0ef;
+  font-size: 0.75em;
+  margin-top: 5px;
+  text-align: left;
+  padding-left: 5px;
+  font-style: italic;
+}
+
+/* Remover a cor do ícone para campos readonly */
+.input-box .readonly-field + .icon {
+  color: #666 !important;
+}
+
+button {
+  width: 100%;
+  height: 40px;
+  background: #0ef;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: 600;
+  color: #000;
+  transition: .3s;
+  margin-top: 15px;
+}
+
+button:hover {
+  background: #00d0d0;
+  box-shadow: 0 0 10px #0ef, 0 0 10px #0ef;
+}
+
+.register-link {
+  font-size: .85em;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.register-link p {
+  color: #fff;
+}
+
+.register-link p a {
+  color: #0ef;
+  text-decoration: none;
+  font-weight: 600;
+  margin-left: 4px;
+  transition: .3s;
+}
+
+.register-link p a:hover {
+  text-decoration: underline;
+}
+
+.container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+}
+
+.right-side {
+  width: 50%;
+  background: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.left-side {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  background: #b0e0e6;
+  padding: 20px;
+}
+
+.left-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 3rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 20px;
+  text-align: center;
+  text-shadow: 0 0 8px rgba(0,0,0,0.15);
+}
+
+.ilustracao {
+  max-width: 65%;
+  height: auto;
+}
+
+/* Estilos para alertas */
+.alerta-form {
+  width: 100%;
+  padding: 12px;
+  text-align: center;
+  font-weight: bold;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  font-size: 0.9em;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.alerta-sucesso {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.alerta-erro {
+  background-color: #f44336;
+  color: white;
+}
+
+.alerta-form p {
+  margin: 0;
+}
+
+/* Estilos para mensagens de erro */
+.error-message {
+  color: #ff4444;
+  font-size: 0.8em;
+  margin-top: 5px;
+  display: none;
+  text-align: left;
+  padding-left: 5px;
+}
+
+.input-box.error input, .input-box.error select {
+  border-color: #ff4444 !important;
+  box-shadow: 0 0 5px rgba(255, 68, 68, 0.5);
+}
+
+.input-box.error .icon {
+  color: #ff4444 !important;
+}
+
+.input-box input:focus, .input-box select:focus {
+  border-color: #0ef;
+  box-shadow: 0 0 5px rgba(0, 238, 255, 0.5);
+}
+
+/* Estilo específico para selects com foco */
+.input-box select:focus {
+  border-color: #0ef;
+  box-shadow: 0 0 5px rgba(0, 238, 255, 0.5);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+  
+  .left-side, .right-side {
+    width: 100%;
+    height: 50vh;
+  }
+  
+  .wrapper {
+    width: 90%;
+    margin: 20px auto;
+  }
+  
+  .left-title {
+    font-size: 2rem;
+  }
+  
+  .ilustracao {
+    max-width: 50%;
+  }
+}
+
+/* Estilo para campos readonly */
+.readonly-field {
+    background-color: #2a2a2a !important;
+    color: #888 !important;
+    cursor: not-allowed !important;
+    border-color: #444 !important;
+}
+
+.readonly-field:focus {
+    border-color: #444 !important;
+    box-shadow: none !important;
+}
+
+/* Informação do campo */
+.field-info {
+    color: #0ef;
+    font-size: 0.75em;
+    margin-top: 5px;
+    text-align: left;
+    padding-left: 5px;
+    font-style: italic;
+}
+
+/* Remover a cor do ícone para campos readonly */
+.input-box .readonly-field + .icon {
+    color: #666 !important;
+=======
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #000;
+}
+
+.logo {
+  width: 80px;
+  height: auto;
+  display: block;
+  margin: 0 auto 10px auto;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 420px;
+  padding: 30px 25px;
+  background: rgba(20, 20, 20, 0.9);
+  border: 2px solid #333;
+  border-radius: 12px;
+  transition: .4s;
+  box-shadow: 0 0 10px #000;
+}
+
+.wrapper:hover {
+  border-color: #0ef;
+  box-shadow: 0 0 20px #0ef, inset 0 0 20px #0ef;
+}
+
+h2 {
+  font-size: 1.8em;
+  text-align: center;
+  color: #fff;
+  margin-bottom: 15px;
+}
+
+.input-box {
+  position: relative;
+  width: 100%;
+  margin: 18px 0;
+}
+
+.input-box input, .input-box select {
+  width: 100%;
+  height: 42px;
+  background: transparent;
+  border: 1.5px solid #333;
+  outline: none;
+  border-radius: 6px;
+  font-size: 0.95em;
+  color: #fff;
+  padding: 0 10px 0 38px;
+  transition: .3s;
+}
+
+.input-box input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.input-box .icon {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  color: #aaa;
+  font-size: 1.1em;
+  transition: .3s;
+}
+
+.wrapper:hover .input-box .icon {
+  color: #0ef;
+}
+
+/* Estilo para selects */
+.form-select {
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.form-select option {
+  background: #333;
+  color: #fff;
+}
+
+/* Estilo para campos readonly */
+.readonly-field {
+  background-color: #2a2a2a !important;
+  color: #888 !important;
+  cursor: not-allowed !important;
+  border-color: #444 !important;
+}
+
+.readonly-field:focus {
+  border-color: #444 !important;
+  box-shadow: none !important;
+}
+
+/* Informação do campo */
+.field-info {
+  color: #0ef;
+  font-size: 0.75em;
+  margin-top: 5px;
+  text-align: left;
+  padding-left: 5px;
+  font-style: italic;
+}
+
+/* Remover a cor do ícone para campos readonly */
+.input-box .readonly-field + .icon {
+  color: #666 !important;
+}
+
+button {
+  width: 100%;
+  height: 40px;
+  background: #0ef;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: 600;
+  color: #000;
+  transition: .3s;
+  margin-top: 15px;
+}
+
+button:hover {
+  background: #00d0d0;
+  box-shadow: 0 0 10px #0ef, 0 0 10px #0ef;
+}
+
+.register-link {
+  font-size: .85em;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.register-link p {
+  color: #fff;
+}
+
+.register-link p a {
+  color: #0ef;
+  text-decoration: none;
+  font-weight: 600;
+  margin-left: 4px;
+  transition: .3s;
+}
+
+.register-link p a:hover {
+  text-decoration: underline;
+}
+
+.container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+}
+
+.right-side {
+  width: 50%;
+  background: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.left-side {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  background: #b0e0e6;
+  padding: 20px;
+}
+
+.left-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 3rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 20px;
+  text-align: center;
+  text-shadow: 0 0 8px rgba(0,0,0,0.15);
+}
+
+.ilustracao {
+  max-width: 65%;
+  height: auto;
+}
+
+/* Estilos para alertas */
+.alerta-form {
+  width: 100%;
+  padding: 12px;
+  text-align: center;
+  font-weight: bold;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  font-size: 0.9em;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.alerta-sucesso {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.alerta-erro {
+  background-color: #f44336;
+  color: white;
+}
+
+.alerta-form p {
+  margin: 0;
+}
+
+/* Estilos para mensagens de erro */
+.error-message {
+  color: #ff4444;
+  font-size: 0.8em;
+  margin-top: 5px;
+  display: none;
+  text-align: left;
+  padding-left: 5px;
+}
+
+.input-box.error input, .input-box.error select {
+  border-color: #ff4444 !important;
+  box-shadow: 0 0 5px rgba(255, 68, 68, 0.5);
+}
+
+.input-box.error .icon {
+  color: #ff4444 !important;
+}
+
+.input-box input:focus, .input-box select:focus {
+  border-color: #0ef;
+  box-shadow: 0 0 5px rgba(0, 238, 255, 0.5);
+}
+
+/* Estilo específico para selects com foco */
+.input-box select:focus {
+  border-color: #0ef;
+  box-shadow: 0 0 5px rgba(0, 238, 255, 0.5);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+  
+  .left-side, .right-side {
+    width: 100%;
+    height: 50vh;
+  }
+  
+  .wrapper {
+    width: 90%;
+    margin: 20px auto;
+  }
+  
+  .left-title {
+    font-size: 2rem;
+  }
+  
+  .ilustracao {
+    max-width: 50%;
+  }
+}
+
+/* Estilo para campos readonly */
+.readonly-field {
+    background-color: #2a2a2a !important;
+    color: #888 !important;
+    cursor: not-allowed !important;
+    border-color: #444 !important;
+}
+
+.readonly-field:focus {
+    border-color: #444 !important;
+    box-shadow: none !important;
+}
+
+/* Informação do campo */
+.field-info {
+    color: #0ef;
+    font-size: 0.75em;
+    margin-top: 5px;
+    text-align: left;
+    padding-left: 5px;
+    font-style: italic;
+}
+
+/* Remover a cor do ícone para campos readonly */
+.input-box .readonly-field + .icon {
+    color: #666 !important;
+>>>>>>> 9e93ba123b7ce12703712f423d83b350b9cc1f36
+}

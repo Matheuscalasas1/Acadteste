@@ -1,0 +1,890 @@
+<<<<<<< HEAD
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Página Inicial - AcadSystem</title>
+    <link rel="stylesheet" th:href="@{/home.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <!-- IonIcons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+
+<body>
+<header>
+   <nav class="navbar">
+    <div class="nav-group">
+        <a class="nav-link active" onclick="showListaAlunos()">Lista de Alunos</a>
+        <a class="nav-link" onclick="showCadastroAluno()">Adicionar Aluno</a>
+        <!-- BOTÃO DE RELATÓRIOS CORRIGIDO -->
+        <a class="nav-link" href="/relatorios">
+            <ion-icon name="bar-chart"></ion-icon>
+            Relatórios
+        </a>
+    </div>
+    <a class="nav-link nav-sair" onclick="sairConta()">
+        <ion-icon name="log-out"></ion-icon>
+        Sair da Conta
+    </a>
+</nav>
+</header>
+
+<div class="container">
+    
+   <!-- SEÇÃO LISTA DE ALUNOS (padrão) -->
+<div id="lista-alunos" class="section active">
+    <h2>Lista de Alunos</h2>
+
+
+    <!-- Mensagem se não houver alunos -->
+    <div th:if="${alunos.empty}" class="no-data">
+        <p>Nenhum aluno cadastrado.</p>
+        <button class="btn-add-first" onclick="showCadastroAluno()">
+            <ion-icon name="person-add"></ion-icon>
+            Cadastrar Primeiro Aluno
+        </button>
+    </div>
+
+    <table th:unless="${alunos.empty}">
+    <thead>
+    <tr>
+        <th>Nome do Aluno</th>
+        <th>Curso</th>
+        <th>Matrícula</th>
+        <th>Turno</th>
+        <th>Status</th>
+        <th>Ações</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="aluno : ${alunos}">
+        <td th:text="${aluno.nomeAluno}"></td>
+        <td th:text="${aluno.curso}"></td>
+        <td th:text="${aluno.matricula}"></td>
+        <td th:text="${aluno.turno}"></td>
+        <td>
+            <span th:text="${aluno.status}"
+                  th:class="${aluno.status == 'Ativo'} ? 'badge-success' :
+                           (${aluno.status == 'Inativo'} ? 'badge-danger' :
+                           (${aluno.status == 'Trancado'} ? 'badge-warning' : 'badge-info'))">
+            </span>
+        </td>
+        <td>
+            <div class="botoes-acao">
+                <button class="btn-delete"
+                        th:data-id="${aluno.id}"
+                        th:data-nome="${aluno.nomeAluno}"
+                        onclick="confirmarDelete(this.getAttribute('data-id'), this.getAttribute('data-nome'))">
+                    <ion-icon name="trash"></ion-icon>
+                    Deletar
+                </button>
+
+                <button class="btn-update"
+                        th:data-id="${aluno.id}"
+                        onclick="editarAluno(this.getAttribute('data-id'))">
+                    <ion-icon name="create"></ion-icon>
+                    Atualizar
+                </button>
+
+                <button class="btn-details"
+                        th:data-id="${aluno.id}"
+                        onclick="detalhesAluno(this.getAttribute('data-id'))">
+                    <ion-icon name="eye"></ion-icon>
+                    Detalhes
+                </button>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</div>
+
+    <!-- SEÇÃO CADASTRO DE ALUNO -->
+    <div id="cadastro-aluno" class="section">
+        <div class="cadastro-header">
+            <h2>Cadastrar Novo Aluno</h2>
+            <button type="button" class="btn-back" onclick="showListaAlunos()">
+                <ion-icon name="arrow-back"></ion-icon>
+                Voltar para Lista
+            </button>
+        </div>
+        
+        <!-- Alertas -->
+        <div th:if="${sucesso}" class="alerta-form alerta-sucesso">
+            <p th:text="${sucesso}"></p>
+        </div>
+        <div th:if="${erro}" class="alerta-form alerta-erro">
+            <p th:text="${erro}"></p>
+        </div>
+        
+        <!-- FORMULÁRIO DE CADASTRO -->
+        <form th:action="@{/alunos/salvar}" th:object="${aluno}" method="post" id="formAluno" class="cadastro-form">
+
+            <div class="form-row">
+                <!-- NOME DO ALUNO -->
+                <div class="input-box">
+                    <span class="icon"><ion-icon name="person"></ion-icon></span>
+                    <input type="text" th:field="*{nomeAluno}" id="nomeAluno" placeholder="Nome do Aluno" required>
+                    <div class="error-message" id="error-nome"></div>
+                </div>
+
+                <!-- CURSO -->
+                <div class="input-box">
+                    <span class="icon"><ion-icon name="school"></ion-icon></span>
+                    <input type="text" th:field="*{curso}" id="curso" placeholder="Curso" required>
+                    <div class="error-message" id="error-curso"></div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <!-- MATRÍCULA (APENAS LEITURA) -->
+                <div class="input-box">
+                    <span class="icon"><ion-icon name="card"></ion-icon></span>
+                    <input type="text" th:field="*{matricula}" id="matricula" placeholder="Matrícula" readonly class="readonly-field">
+                    <div class="field-info">Matrícula gerada automaticamente</div>
+                </div>
+
+                <!-- TURNO -->
+                <div class="input-box">
+                    <span class="icon"><ion-icon name="time"></ion-icon></span>
+                    <select th:field="*{turno}" id="turno" class="form-select" required>
+                        <option value="">Selecione o Turno</option>
+                        <option value="Matutino">Matutino</option>
+                        <option value="Vespertino">Vespertino</option>
+                        <option value="Noturno">Noturno</option>
+                    </select>
+                    <div class="error-message" id="error-turno"></div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <!-- STATUS -->
+                <div class="input-box full-width">
+                    <span class="icon"><ion-icon name="flag"></ion-icon></span>
+                    <select th:field="*{status}" id="status" class="form-select" required>
+                        <option value="">Selecione o Status</option>
+                        <option value="Ativo">Ativo</option>
+                        <option value="Inativo">Inativo</option>
+                        <option value="Trancado">Trancado</option>
+                        <option value="Formado">Formado</option>
+                    </select>
+                    <div class="error-message" id="error-status"></div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-submit">
+                    <ion-icon name="save"></ion-icon>
+                    Cadastrar Aluno
+                </button>
+                
+                <button type="button" class="btn-cancel" onclick="showListaAlunos()">
+                    <ion-icon name="close"></ion-icon>
+                    Cancelar
+                </button>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+<footer>
+    <p>© Sistema Escolar 2025</p>
+</footer>
+
+<!-- JavaScript para alternar entre as seções -->
+<script>
+    // Mostrar lista de alunos (padrão)
+    function showListaAlunos() {
+        document.getElementById('lista-alunos').classList.add('active');
+        document.getElementById('cadastro-aluno').classList.remove('active');
+        
+        // Atualizar navegação
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.classList.remove('active');
+        });
+        document.querySelector('.nav-link:first-child').classList.add('active');
+        
+        // Limpar mensagens de alerta
+        limparAlertas();
+    }
+
+    // Mostrar cadastro de aluno
+    function showCadastroAluno() {
+        document.getElementById('lista-alunos').classList.remove('active');
+        document.getElementById('cadastro-aluno').classList.add('active');
+        
+        // Atualizar navegação
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.classList.remove('active');
+        });
+        document.querySelector('.nav-link:nth-child(2)').classList.add('active');
+        
+        // Limpar formulário e focar no primeiro campo
+        document.getElementById('formAluno').reset();
+        document.getElementById('nomeAluno').focus();
+        
+        // Limpar mensagens de alerta
+        limparAlertas();
+    }
+
+    // Limpar mensagens de alerta
+    function limparAlertas() {
+        const alertas = document.querySelectorAll('.alerta-form');
+        alertas.forEach(alerta => {
+            alerta.style.display = 'none';
+        });
+    }
+
+    function validarFormulario() {
+    limparErros();
+
+    const nomeAluno = document.getElementById('nomeAluno').value.trim();
+    const curso = document.getElementById('curso').value.trim();
+    const turno = document.getElementById('turno').value;
+    const status = document.getElementById('status').value;
+
+    let valido = true;
+
+    // Validação do Nome
+    if (nomeAluno === '') {
+        mostrarErro('error-nome', 'Por favor, digite o nome do aluno');
+        valido = false;
+    }
+
+    // Validação do Curso
+    if (curso === '') {
+        mostrarErro('error-curso', 'Por favor, digite o curso');
+        valido = false;
+    }
+
+    // Validação do Turno
+    if (turno === '') {
+        mostrarErro('error-turno', 'Por favor, selecione o turno');
+        valido = false;
+    }
+
+    // Validação do Status
+    if (status === '') {
+        mostrarErro('error-status', 'Por favor, selecione o status');
+        valido = false;
+    }
+
+    if (valido) {
+        console.log('Formulário válido, enviando...');
+        // Mostrar loading ou feedback visual
+        mostrarLoading();
+    }
+
+    return valido;
+}
+// Função para confirmar delete
+function confirmarDelete(alunoId, alunoNome) {
+    if (confirm('Tem certeza que deseja deletar o aluno "' + alunoNome + '"?')) {
+        window.location.href = '/alunos/delete/' + alunoId;
+    }
+}
+
+// Função para editar aluno
+function editarAluno(alunoId) {
+    window.location.href = '/alunos/editar/' + alunoId;
+}
+
+// Função para ver detalhes do aluno
+function detalhesAluno(alunoId) {
+    window.location.href = '/alunos/detalhes/' + alunoId;
+}
+
+function mostrarLoading() {
+    const btnSubmit = document.querySelector('.btn-submit');
+    if (btnSubmit) {
+        btnSubmit.innerHTML = '<ion-icon name="hourglass"></ion-icon> Salvando...';
+        btnSubmit.disabled = true;
+    }
+}
+
+function esconderLoading() {
+    const btnSubmit = document.querySelector('.btn-submit');
+    if (btnSubmit) {
+        btnSubmit.innerHTML = '<ion-icon name="save"></ion-icon> Cadastrar Aluno';
+        btnSubmit.disabled = false;
+    }
+}
+
+// Verificar se há mensagem de sucesso e redirecionar automaticamente
+function verificarMensagemSucesso() {
+    const mensagemSucesso = document.querySelector('.alerta-sucesso');
+    if (mensagemSucesso && mensagemSucesso.textContent.trim() !== '') {
+        console.log('Mensagem de sucesso detectada, aguardando para mostrar lista...');
+        
+        // Esperar 2 segundos e então mostrar a lista de alunos
+        setTimeout(() => {
+            showListaAlunos();
+            console.log('Redirecionando automaticamente para lista de alunos');
+        }, 2000);
+    }
+}
+
+// Modifique a inicialização para verificar mensagens
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM carregado - inicializando funcionalidades');
+    
+    // Configurar event listeners para validação em tempo real
+    const campos = ['nomeAluno', 'curso', 'turno', 'status'];
+    
+    campos.forEach(campo => {
+        const elemento = document.getElementById(campo);
+        if (elemento) {
+            elemento.addEventListener('input', function() {
+                const erroId = 'error-' + campo;
+                const erroElement = document.getElementById(erroId);
+                if (erroElement) {
+                    erroElement.style.display = 'none';
+                    erroElement.textContent = '';
+                }
+                
+                const inputBox = this.closest('.input-box');
+                if (inputBox) {
+                    inputBox.classList.remove('error');
+                }
+            });
+        }
+    });
+
+    // Adicionar validação ao formulário
+    const formAluno = document.getElementById('formAluno');
+    if (formAluno) {
+        formAluno.addEventListener('submit', function(e) {
+            console.log('Formulário submetido - validando...');
+            if (!validarFormulario()) {
+                e.preventDefault();
+                console.log('Validação falhou - impedindo envio');
+            } else {
+                console.log('Validação passou - enviando formulário');
+                // O envio do formulário continuará normalmente para o Spring Boot
+            }
+        });
+    }
+
+    // Configurar botões
+    const btnAdicionarAluno = document.querySelector('.nav-link:nth-child(2)');
+    const btnCadastrarPrimeiro = document.querySelector('.btn-add-first');
+    const btnVoltarLista = document.querySelector('.btn-back');
+    const btnCancelar = document.querySelector('.btn-cancel');
+
+    if (btnAdicionarAluno) {
+        btnAdicionarAluno.addEventListener('click', showCadastroAluno);
+    }
+
+    if (btnCadastrarPrimeiro) {
+        btnCadastrarPrimeiro.addEventListener('click', showCadastroAluno);
+    }
+
+    if (btnVoltarLista) {
+        btnVoltarLista.addEventListener('click', showListaAlunos);
+    }
+
+    if (btnCancelar) {
+        btnCancelar.addEventListener('click', showListaAlunos);
+    }
+
+    // Verificar mensagens e decidir qual seção mostrar
+    const sucesso = document.querySelector('.alerta-sucesso');
+    const erro = document.querySelector('.alerta-erro');
+    
+    if (sucesso && sucesso.textContent.trim() !== '') {
+        // Se há mensagem de sucesso, mostrar a lista de alunos após um tempo
+        console.log('Mensagem de sucesso detectada na inicialização');
+        setTimeout(() => {
+            showListaAlunos();
+        }, 100);
+    } else if (erro && erro.textContent.trim() !== '') {
+        // Se há mensagem de erro, manter na seção de cadastro
+        showCadastroAluno();
+    } else {
+        // Senão, mostrar a lista de alunos por padrão
+        showListaAlunos();
+    }
+   // Função para confirmar delete
+function confirmarDelete(alunoId, alunoNome) {
+    if (confirm('Tem certeza que deseja deletar o aluno "' + alunoNome + '"?')) {
+        window.location.href = '/alunos/delete/' + alunoId;
+    }
+}
+
+// Função para editar aluno
+function editarAluno(alunoId) {
+    window.location.href = '/alunos/editar/' + alunoId;
+}
+
+// Função para ver detalhes do aluno
+function detalhesAluno(alunoId) {
+    window.location.href = '/alunos/detalhes/' + alunoId;
+}
+    // Verificar novamente após um tempo para garantir o redirecionamento
+    setTimeout(verificarMensagemSucesso, 500);
+});
+
+    // Fallback para onclick no HTML caso os event listeners não funcionem
+    window.showListaAlunos = showListaAlunos;
+    window.showCadastroAluno = showCadastroAluno;
+
+    // Função para sair da conta
+function sairConta() {
+    if (confirm('Tem certeza que deseja sair da sua conta?')) {
+        // Redireciona para a página de login com parâmetro de logout
+        window.location.href = '/login?logout=true';
+    }
+}
+</script>
+
+</body>
+=======
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Página Inicial - AcadSystem</title>
+    <link rel="stylesheet" th:href="@{/home.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <!-- IonIcons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+
+<body>
+<header>
+   <nav class="navbar">
+    <div class="nav-group">
+        <a class="nav-link active" onclick="showListaAlunos()">Lista de Alunos</a>
+        <a class="nav-link" onclick="showCadastroAluno()">Adicionar Aluno</a>
+        <!-- BOTÃO DE RELATÓRIOS CORRIGIDO -->
+        <a class="nav-link" href="/relatorios">
+            <ion-icon name="bar-chart"></ion-icon>
+            Relatórios
+        </a>
+    </div>
+    <a class="nav-link nav-sair" onclick="sairConta()">
+        <ion-icon name="log-out"></ion-icon>
+        Sair da Conta
+    </a>
+</nav>
+</header>
+
+<div class="container">
+    
+   <!-- SEÇÃO LISTA DE ALUNOS (padrão) -->
+<div id="lista-alunos" class="section active">
+    <h2>Lista de Alunos</h2>
+
+
+    <!-- Mensagem se não houver alunos -->
+    <div th:if="${alunos.empty}" class="no-data">
+        <p>Nenhum aluno cadastrado.</p>
+        <button class="btn-add-first" onclick="showCadastroAluno()">
+            <ion-icon name="person-add"></ion-icon>
+            Cadastrar Primeiro Aluno
+        </button>
+    </div>
+
+    <table th:unless="${alunos.empty}">
+    <thead>
+    <tr>
+        <th>Nome do Aluno</th>
+        <th>Curso</th>
+        <th>Matrícula</th>
+        <th>Turno</th>
+        <th>Status</th>
+        <th>Ações</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="aluno : ${alunos}">
+        <td th:text="${aluno.nomeAluno}"></td>
+        <td th:text="${aluno.curso}"></td>
+        <td th:text="${aluno.matricula}"></td>
+        <td th:text="${aluno.turno}"></td>
+        <td>
+            <span th:text="${aluno.status}"
+                  th:class="${aluno.status == 'Ativo'} ? 'badge-success' :
+                           (${aluno.status == 'Inativo'} ? 'badge-danger' :
+                           (${aluno.status == 'Trancado'} ? 'badge-warning' : 'badge-info'))">
+            </span>
+        </td>
+        <td>
+            <div class="botoes-acao">
+                <button class="btn-delete"
+                        th:data-id="${aluno.id}"
+                        th:data-nome="${aluno.nomeAluno}"
+                        onclick="confirmarDelete(this.getAttribute('data-id'), this.getAttribute('data-nome'))">
+                    <ion-icon name="trash"></ion-icon>
+                    Deletar
+                </button>
+
+                <button class="btn-update"
+                        th:data-id="${aluno.id}"
+                        onclick="editarAluno(this.getAttribute('data-id'))">
+                    <ion-icon name="create"></ion-icon>
+                    Atualizar
+                </button>
+
+                <button class="btn-details"
+                        th:data-id="${aluno.id}"
+                        onclick="detalhesAluno(this.getAttribute('data-id'))">
+                    <ion-icon name="eye"></ion-icon>
+                    Detalhes
+                </button>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</div>
+
+    <!-- SEÇÃO CADASTRO DE ALUNO -->
+    <div id="cadastro-aluno" class="section">
+        <div class="cadastro-header">
+            <h2>Cadastrar Novo Aluno</h2>
+            <button type="button" class="btn-back" onclick="showListaAlunos()">
+                <ion-icon name="arrow-back"></ion-icon>
+                Voltar para Lista
+            </button>
+        </div>
+        
+        <!-- Alertas -->
+        <div th:if="${sucesso}" class="alerta-form alerta-sucesso">
+            <p th:text="${sucesso}"></p>
+        </div>
+        <div th:if="${erro}" class="alerta-form alerta-erro">
+            <p th:text="${erro}"></p>
+        </div>
+        
+        <!-- FORMULÁRIO DE CADASTRO -->
+        <form th:action="@{/alunos/salvar}" th:object="${aluno}" method="post" id="formAluno" class="cadastro-form">
+
+            <div class="form-row">
+                <!-- NOME DO ALUNO -->
+                <div class="input-box">
+                    <span class="icon"><ion-icon name="person"></ion-icon></span>
+                    <input type="text" th:field="*{nomeAluno}" id="nomeAluno" placeholder="Nome do Aluno" required>
+                    <div class="error-message" id="error-nome"></div>
+                </div>
+
+                <!-- CURSO -->
+                <div class="input-box">
+                    <span class="icon"><ion-icon name="school"></ion-icon></span>
+                    <input type="text" th:field="*{curso}" id="curso" placeholder="Curso" required>
+                    <div class="error-message" id="error-curso"></div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <!-- MATRÍCULA (APENAS LEITURA) -->
+                <div class="input-box">
+                    <span class="icon"><ion-icon name="card"></ion-icon></span>
+                    <input type="text" th:field="*{matricula}" id="matricula" placeholder="Matrícula" readonly class="readonly-field">
+                    <div class="field-info">Matrícula gerada automaticamente</div>
+                </div>
+
+                <!-- TURNO -->
+                <div class="input-box">
+                    <span class="icon"><ion-icon name="time"></ion-icon></span>
+                    <select th:field="*{turno}" id="turno" class="form-select" required>
+                        <option value="">Selecione o Turno</option>
+                        <option value="Matutino">Matutino</option>
+                        <option value="Vespertino">Vespertino</option>
+                        <option value="Noturno">Noturno</option>
+                    </select>
+                    <div class="error-message" id="error-turno"></div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <!-- STATUS -->
+                <div class="input-box full-width">
+                    <span class="icon"><ion-icon name="flag"></ion-icon></span>
+                    <select th:field="*{status}" id="status" class="form-select" required>
+                        <option value="">Selecione o Status</option>
+                        <option value="Ativo">Ativo</option>
+                        <option value="Inativo">Inativo</option>
+                        <option value="Trancado">Trancado</option>
+                        <option value="Formado">Formado</option>
+                    </select>
+                    <div class="error-message" id="error-status"></div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-submit">
+                    <ion-icon name="save"></ion-icon>
+                    Cadastrar Aluno
+                </button>
+                
+                <button type="button" class="btn-cancel" onclick="showListaAlunos()">
+                    <ion-icon name="close"></ion-icon>
+                    Cancelar
+                </button>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+<footer>
+    <p>© Sistema Escolar 2025</p>
+</footer>
+
+<!-- JavaScript para alternar entre as seções -->
+<script>
+    // Mostrar lista de alunos (padrão)
+    function showListaAlunos() {
+        document.getElementById('lista-alunos').classList.add('active');
+        document.getElementById('cadastro-aluno').classList.remove('active');
+        
+        // Atualizar navegação
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.classList.remove('active');
+        });
+        document.querySelector('.nav-link:first-child').classList.add('active');
+        
+        // Limpar mensagens de alerta
+        limparAlertas();
+    }
+
+    // Mostrar cadastro de aluno
+    function showCadastroAluno() {
+        document.getElementById('lista-alunos').classList.remove('active');
+        document.getElementById('cadastro-aluno').classList.add('active');
+        
+        // Atualizar navegação
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.classList.remove('active');
+        });
+        document.querySelector('.nav-link:nth-child(2)').classList.add('active');
+        
+        // Limpar formulário e focar no primeiro campo
+        document.getElementById('formAluno').reset();
+        document.getElementById('nomeAluno').focus();
+        
+        // Limpar mensagens de alerta
+        limparAlertas();
+    }
+
+    // Limpar mensagens de alerta
+    function limparAlertas() {
+        const alertas = document.querySelectorAll('.alerta-form');
+        alertas.forEach(alerta => {
+            alerta.style.display = 'none';
+        });
+    }
+
+    function validarFormulario() {
+    limparErros();
+
+    const nomeAluno = document.getElementById('nomeAluno').value.trim();
+    const curso = document.getElementById('curso').value.trim();
+    const turno = document.getElementById('turno').value;
+    const status = document.getElementById('status').value;
+
+    let valido = true;
+
+    // Validação do Nome
+    if (nomeAluno === '') {
+        mostrarErro('error-nome', 'Por favor, digite o nome do aluno');
+        valido = false;
+    }
+
+    // Validação do Curso
+    if (curso === '') {
+        mostrarErro('error-curso', 'Por favor, digite o curso');
+        valido = false;
+    }
+
+    // Validação do Turno
+    if (turno === '') {
+        mostrarErro('error-turno', 'Por favor, selecione o turno');
+        valido = false;
+    }
+
+    // Validação do Status
+    if (status === '') {
+        mostrarErro('error-status', 'Por favor, selecione o status');
+        valido = false;
+    }
+
+    if (valido) {
+        console.log('Formulário válido, enviando...');
+        // Mostrar loading ou feedback visual
+        mostrarLoading();
+    }
+
+    return valido;
+}
+// Função para confirmar delete
+function confirmarDelete(alunoId, alunoNome) {
+    if (confirm('Tem certeza que deseja deletar o aluno "' + alunoNome + '"?')) {
+        window.location.href = '/alunos/delete/' + alunoId;
+    }
+}
+
+// Função para editar aluno
+function editarAluno(alunoId) {
+    window.location.href = '/alunos/editar/' + alunoId;
+}
+
+// Função para ver detalhes do aluno
+function detalhesAluno(alunoId) {
+    window.location.href = '/alunos/detalhes/' + alunoId;
+}
+
+function mostrarLoading() {
+    const btnSubmit = document.querySelector('.btn-submit');
+    if (btnSubmit) {
+        btnSubmit.innerHTML = '<ion-icon name="hourglass"></ion-icon> Salvando...';
+        btnSubmit.disabled = true;
+    }
+}
+
+function esconderLoading() {
+    const btnSubmit = document.querySelector('.btn-submit');
+    if (btnSubmit) {
+        btnSubmit.innerHTML = '<ion-icon name="save"></ion-icon> Cadastrar Aluno';
+        btnSubmit.disabled = false;
+    }
+}
+
+// Verificar se há mensagem de sucesso e redirecionar automaticamente
+function verificarMensagemSucesso() {
+    const mensagemSucesso = document.querySelector('.alerta-sucesso');
+    if (mensagemSucesso && mensagemSucesso.textContent.trim() !== '') {
+        console.log('Mensagem de sucesso detectada, aguardando para mostrar lista...');
+        
+        // Esperar 2 segundos e então mostrar a lista de alunos
+        setTimeout(() => {
+            showListaAlunos();
+            console.log('Redirecionando automaticamente para lista de alunos');
+        }, 2000);
+    }
+}
+
+// Modifique a inicialização para verificar mensagens
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM carregado - inicializando funcionalidades');
+    
+    // Configurar event listeners para validação em tempo real
+    const campos = ['nomeAluno', 'curso', 'turno', 'status'];
+    
+    campos.forEach(campo => {
+        const elemento = document.getElementById(campo);
+        if (elemento) {
+            elemento.addEventListener('input', function() {
+                const erroId = 'error-' + campo;
+                const erroElement = document.getElementById(erroId);
+                if (erroElement) {
+                    erroElement.style.display = 'none';
+                    erroElement.textContent = '';
+                }
+                
+                const inputBox = this.closest('.input-box');
+                if (inputBox) {
+                    inputBox.classList.remove('error');
+                }
+            });
+        }
+    });
+
+    // Adicionar validação ao formulário
+    const formAluno = document.getElementById('formAluno');
+    if (formAluno) {
+        formAluno.addEventListener('submit', function(e) {
+            console.log('Formulário submetido - validando...');
+            if (!validarFormulario()) {
+                e.preventDefault();
+                console.log('Validação falhou - impedindo envio');
+            } else {
+                console.log('Validação passou - enviando formulário');
+                // O envio do formulário continuará normalmente para o Spring Boot
+            }
+        });
+    }
+
+    // Configurar botões
+    const btnAdicionarAluno = document.querySelector('.nav-link:nth-child(2)');
+    const btnCadastrarPrimeiro = document.querySelector('.btn-add-first');
+    const btnVoltarLista = document.querySelector('.btn-back');
+    const btnCancelar = document.querySelector('.btn-cancel');
+
+    if (btnAdicionarAluno) {
+        btnAdicionarAluno.addEventListener('click', showCadastroAluno);
+    }
+
+    if (btnCadastrarPrimeiro) {
+        btnCadastrarPrimeiro.addEventListener('click', showCadastroAluno);
+    }
+
+    if (btnVoltarLista) {
+        btnVoltarLista.addEventListener('click', showListaAlunos);
+    }
+
+    if (btnCancelar) {
+        btnCancelar.addEventListener('click', showListaAlunos);
+    }
+
+    // Verificar mensagens e decidir qual seção mostrar
+    const sucesso = document.querySelector('.alerta-sucesso');
+    const erro = document.querySelector('.alerta-erro');
+    
+    if (sucesso && sucesso.textContent.trim() !== '') {
+        // Se há mensagem de sucesso, mostrar a lista de alunos após um tempo
+        console.log('Mensagem de sucesso detectada na inicialização');
+        setTimeout(() => {
+            showListaAlunos();
+        }, 100);
+    } else if (erro && erro.textContent.trim() !== '') {
+        // Se há mensagem de erro, manter na seção de cadastro
+        showCadastroAluno();
+    } else {
+        // Senão, mostrar a lista de alunos por padrão
+        showListaAlunos();
+    }
+   // Função para confirmar delete
+function confirmarDelete(alunoId, alunoNome) {
+    if (confirm('Tem certeza que deseja deletar o aluno "' + alunoNome + '"?')) {
+        window.location.href = '/alunos/delete/' + alunoId;
+    }
+}
+
+// Função para editar aluno
+function editarAluno(alunoId) {
+    window.location.href = '/alunos/editar/' + alunoId;
+}
+
+// Função para ver detalhes do aluno
+function detalhesAluno(alunoId) {
+    window.location.href = '/alunos/detalhes/' + alunoId;
+}
+    // Verificar novamente após um tempo para garantir o redirecionamento
+    setTimeout(verificarMensagemSucesso, 500);
+});
+
+    // Fallback para onclick no HTML caso os event listeners não funcionem
+    window.showListaAlunos = showListaAlunos;
+    window.showCadastroAluno = showCadastroAluno;
+
+    // Função para sair da conta
+function sairConta() {
+    if (confirm('Tem certeza que deseja sair da sua conta?')) {
+        // Redireciona para a página de login com parâmetro de logout
+        window.location.href = '/login?logout=true';
+    }
+}
+</script>
+
+</body>
+>>>>>>> 9e93ba123b7ce12703712f423d83b350b9cc1f36
+</html>

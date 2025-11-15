@@ -1,0 +1,12 @@
+<<<<<<< HEAD
+{"properties": [{
+  "name": "Spring.profiles.active",
+  "type": "java.lang.String",
+  "description": "A description for 'Spring.profiles.active'"
+=======
+{"properties": [{
+  "name": "Spring.profiles.active",
+  "type": "java.lang.String",
+  "description": "A description for 'Spring.profiles.active'"
+>>>>>>> 9e93ba123b7ce12703712f423d83b350b9cc1f36
+}]}
