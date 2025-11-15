@@ -336,6 +336,14 @@
     const alunosPorTurno = /*[[${alunosPorTurno}]]*/ {};
     const alunosPorStatus = /*[[${alunosPorStatus}]]*/ {};
     
+    // Variáveis para armazenar as instâncias dos gráficos
+    let charts = {
+        curso: null,
+        turno: null,
+        status: null,
+        evolucao: null
+    };
+    
     // Função para converter Map em arrays para Chart.js
     function mapToChartData(mapData) {
         if (!mapData || typeof mapData !== 'object' || Object.keys(mapData).length === 0) {
@@ -374,8 +382,20 @@
         return coresPorStatus;
     }
     
-    // Aguardar o DOM carregar completamente
-    document.addEventListener('DOMContentLoaded', function() {
+    // Função para destruir gráficos existentes
+    function destroyCharts() {
+        Object.values(charts).forEach(chart => {
+            if (chart) {
+                chart.destroy();
+            }
+        });
+    }
+    
+    // Função para inicializar gráficos
+    function initializeCharts() {
+        // Destruir gráficos existentes primeiro
+        destroyCharts();
+        
         // Configuração responsiva para Chart.js
         Chart.defaults.font.size = window.innerWidth < 768 ? 10 : 12;
         
@@ -383,7 +403,7 @@
         const ctxCurso = document.getElementById('graficoCurso');
         if (ctxCurso) {
             const cursoData = mapToChartData(alunosPorCurso);
-            new Chart(ctxCurso, {
+            charts.curso = new Chart(ctxCurso, {
                 type: 'pie',
                 data: {
                     labels: cursoData.labels,
@@ -411,7 +431,7 @@
         const ctxTurno = document.getElementById('graficoTurno');
         if (ctxTurno) {
             const turnoData = mapToChartData(alunosPorTurno);
-            new Chart(ctxTurno, {
+            charts.turno = new Chart(ctxTurno, {
                 type: 'bar',
                 data: {
                     labels: turnoData.labels,
@@ -434,7 +454,7 @@
             const statusData = mapToChartData(alunosPorStatus);
             const coresForcadas = getCoresPorStatus(statusData.labels);
             
-            new Chart(ctxStatus, {
+            charts.status = new Chart(ctxStatus, {
                 type: 'doughnut',
                 data: {
                     labels: statusData.labels,
@@ -460,7 +480,7 @@
         // Gráfico de Evolução
         const ctxEvolucao = document.getElementById('graficoEvolucao');
         if (ctxEvolucao) {
-            new Chart(ctxEvolucao, {
+            charts.evolucao = new Chart(ctxEvolucao, {
                 type: 'line',
                 data: {
                     labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
@@ -479,14 +499,29 @@
                 }
             });
         }
+    }
+
+    // Inicializar gráficos quando a página carregar
+    document.addEventListener('DOMContentLoaded', function() {
+        initializeCharts();
     });
 
     // Redimensionar gráficos quando a janela for redimensionada
     window.addEventListener('resize', function() {
         Chart.defaults.font.size = window.innerWidth < 768 ? 10 : 12;
     });
+    
+    // Prevenir múltiplas inicializações
+    let chartsInitialized = false;
+    document.addEventListener('DOMContentLoaded', function() {
+        if (!chartsInitialized) {
+            chartsInitialized = true;
+            initializeCharts();
+        }
+    });
     /*]]>*/
 </script>
 
 </body>
 </html>
+
