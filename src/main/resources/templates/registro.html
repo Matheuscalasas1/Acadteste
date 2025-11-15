@@ -1,432 +1,222 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro - AcadSystem</title>
-
-    <link rel="stylesheet" th:href="@{/registro.css}" /> 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-    <!-- IonIcons (Ícones) -->
+    <link rel="stylesheet" th:href="@{/registro.css}">
+    
+    <!-- IonIcons -->
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </head>
 
 <body>
+    <!-- CONTAINER PRINCIPAL -->
+    <div class="container">
 
-<div class="container">
-
-    <!-- Lado Esquerdo (Branco / Título / Ilustração) -->
-    <div class="left-side">
-        <h1 class="left-title">AcadSystem</h1>
-        <img th:src="@{/img/logo-escola.png}" src="/img/logo-escola.png"
-             class="ilustracao" alt="Ilustração da Academia">
-    </div>
-
-    <!-- Lado Direito / Formulário de Registro -->
-    <div class="right-side">
-        <div class="wrapper">
-
-            <img th:src="@{/img/conecte-se.png}" src="/img/conecte-se.png" class="logo" alt="Logo de Conexão">
-
-            <h2>Registro</h2>
-            
-            <!-- Alertas dentro do formulário -->
-            <div th:if="${sucessoRegistro}" class="alerta-form alerta-sucesso">
-                <p th:text="${sucessoRegistro}"></p>
-            </div>
-            <div th:if="${erroRegistro}" class="alerta-form alerta-erro">
-                <p th:text="${erroRegistro}"></p>
-            </div>
-            
-            <!-- FORMULÁRIO DE REGISTRO -->
-            <form th:action="@{/registro}" th:object="${coordenador}" method="post" id="formRegistro" onsubmit="return validarFormulario()">
-
-                <!-- CAMPO NOME COMPLETO -->
-                <div class="input-box">
-                    <span class="icon"><ion-icon name="person"></ion-icon></span>
-                    <input type="text" th:field="*{nome}" id="nome" placeholder="Digite seu nome completo" required>
-                    <div class="error-message" id="error-nome"></div>
-                </div>
-                
-                <!-- CAMPO E-MAIL -->
-                <div class="input-box">
-                    <span class="icon"><ion-icon name="mail"></ion-icon></span>
-                    <input type="email" th:field="*{email}" id="email" placeholder="Digite seu e-mail" required>
-                    <div class="error-message" id="error-email"></div>
-                </div>
-
-                <!-- CAMPO SENHA -->
-                <div class="input-box">
-                    <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
-                    <input type="password" th:field="*{senha}" id="senha" placeholder="Digite sua senha" required>
-                    <span class="icon eye-icon" onclick="togglePassword('senha')">
-                        <ion-icon name="eye-outline"></ion-icon>
-                    </span>
-                    <div class="error-message" id="error-senha"></div>
-                </div>
-
-                <!-- CAMPO CONFIRMAÇÃO DE SENHA -->
-                <div class="input-box">
-                    <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
-                    <input type="password" name="confirmacaoSenha" id="confirmacaoSenha" placeholder="Confirme a senha" required>
-                    <span class="icon eye-icon" onclick="togglePassword('confirmacaoSenha')">
-                        <ion-icon name="eye-outline"></ion-icon>
-                    </span>
-                    <div class="error-message" id="error-confirmacao"></div>
-                </div>
-
-                <button type="submit">Próximo</button>
-
-                <div class="register-link">
-                    <p>Já possui conta? <a th:href="@{/login}">Entrar</a></p>
-                </div>
-            </form>
-
+        <!-- Lado Esquerdo -->
+        <div class="left-side">
+            <h1 class="left-title">AcadSystem</h1>
+            <img th:src="@{/img/logo-escola.png}" src="/img/logo-escola.png"
+                 class="ilustracao" alt="Ilustração da Academia" onerror="this.style.display='none'">
         </div>
+
+        <!-- Lado Direito -->
+        <div class="right-side">
+            <div class="wrapper">
+
+                <img th:src="@{/img/conecte-se.png}" src="/img/conecte-se.png" 
+                     class="logo" alt="Logo de Conexão" onerror="this.style.display='none'">
+
+                <h2>Registro</h2>
+                
+                <!-- Alertas -->
+                <div th:if="${sucessoRegistro}" class="alerta-form alerta-sucesso">
+                    <p th:text="${sucessoRegistro}"></p>
+                </div>
+                <div th:if="${erroRegistro}" class="alerta-form alerta-erro">
+                    <p th:text="${erroRegistro}"></p>
+                </div>
+                
+                <!-- FORMULÁRIO -->
+                <form th:action="@{/registro}" th:object="${coordenador}" method="post" id="formRegistro">
+
+                    <!-- NOME COMPLETO -->
+                    <div class="input-box">
+                        <span class="icon"><ion-icon name="person"></ion-icon></span>
+                        <input type="text" th:field="*{nome}" id="nome" placeholder="Digite seu nome completo" required>
+                        <div class="error-message" id="error-nome"></div>
+                    </div>
+                    
+                    <!-- E-MAIL -->
+                    <div class="input-box">
+                        <span class="icon"><ion-icon name="mail"></ion-icon></span>
+                        <input type="email" th:field="*{email}" id="email" placeholder="Digite seu e-mail" required>
+                        <div class="error-message" id="error-email"></div>
+                    </div>
+
+                    <!-- SENHA -->
+                    <div class="input-box">
+                        <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
+                        <input type="password" th:field="*{senha}" id="senha" placeholder="Digite sua senha" required>
+                        <span class="icon eye-icon" onclick="togglePassword('senha', this)">
+                            <ion-icon name="eye-outline"></ion-icon>
+                        </span>
+                        <div class="error-message" id="error-senha"></div>
+                    </div>
+
+                    <!-- CONFIRMAÇÃO DE SENHA -->
+                    <div class="input-box">
+                        <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
+                        <input type="password" name="confirmacaoSenha" id="confirmacaoSenha" placeholder="Confirme a senha" required>
+                        <span class="icon eye-icon" onclick="togglePassword('confirmacaoSenha', this)">
+                            <ion-icon name="eye-outline"></ion-icon>
+                        </span>
+                        <div class="error-message" id="error-confirmacao"></div>
+                    </div>
+
+                    <button type="submit">Próximo</button>
+
+                    <div class="register-link">
+                        <p>Já possui conta? <a th:href="@{/login}">Entrar</a></p>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
     </div>
 
-</div>
+    <script>
+        // Prevenir envio duplo
+        let formSubmitted = false;
 
-<!-- JavaScript para validações -->
-<script>
-    function validarFormulario() {
-        // Limpar mensagens de erro anteriores
-        limparErros();
-
-        // Obter valores dos campos
-        const nome = document.getElementById('nome').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const senha = document.getElementById('senha').value;
-        const confirmacaoSenha = document.getElementById('confirmacaoSenha').value;
-
-        let valido = true;
-
-        // Validação do Nome
-        if (nome === '') {
-            mostrarErro('error-nome', 'Por favor, digite seu nome completo');
-            valido = false;
-        } else if (nome.length < 2) {
-            mostrarErro('error-nome', 'O nome deve ter pelo menos 2 caracteres');
-            valido = false;
-        }
-
-        // Validação do Email
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (email === '') {
-            mostrarErro('error-email', 'Por favor, digite seu e-mail');
-            valido = false;
-        } else if (!emailRegex.test(email)) {
-            mostrarErro('error-email', 'E-mail incorreto');
-            valido = false;
-        }
-
-        // Validação da Senha
-        if (senha === '') {
-            mostrarErro('error-senha', 'Por favor, digite uma senha');
-            valido = false;
-        } else if (senha.length < 8) {
-            mostrarErro('error-senha', 'A senha deve ter no mínimo 8 caracteres');
-            valido = false;
-        }
-
-        // Validação da Confirmação de Senha
-        if (confirmacaoSenha === '') {
-            mostrarErro('error-confirmacao', 'Por favor, confirme sua senha');
-            valido = false;
-        } else if (senha !== confirmacaoSenha) {
-            mostrarErro('error-confirmacao', 'As senhas não coincidem');
-            valido = false;
-        }
-
-        return valido;
-    }
-
-    function mostrarErro(elementId, mensagem) {
-        const elementoErro = document.getElementById(elementId);
-        elementoErro.textContent = mensagem;
-        elementoErro.style.display = 'block';
-        
-        // Adicionar classe de erro ao input-box pai
-        const inputBox = elementoErro.closest('.input-box');
-        inputBox.classList.add('error');
-    }
-
-    function limparErros() {
-        // Limpar todas as mensagens de erro
-        const erros = document.querySelectorAll('.error-message');
-        erros.forEach(erro => {
-            erro.textContent = '';
-            erro.style.display = 'none';
+        document.getElementById('formRegistro').addEventListener('submit', function(e) {
+            if (formSubmitted) {
+                e.preventDefault();
+                return;
+            }
+            
+            if (validarFormulario()) {
+                formSubmitted = true;
+                this.querySelector('button[type="submit"]').disabled = true;
+                this.querySelector('button[type="submit"]').textContent = 'Cadastrando...';
+            } else {
+                e.preventDefault();
+            }
         });
 
-        // Remover classes de erro dos inputs
-        const inputBoxes = document.querySelectorAll('.input-box');
-        inputBoxes.forEach(box => {
-            box.classList.remove('error');
-        });
-    }
+        function validarFormulario() {
+            limparErros();
 
-    // Função para mostrar/ocultar senha
-    function togglePassword(campoId) {
-        const input = document.getElementById(campoId);
-        const eyeIcon = input.parentElement.querySelector('.eye-icon ion-icon');
-        
-        if (input.type === 'password') {
-            input.type = 'text';
-            eyeIcon.setAttribute('name', 'eye-off-outline');
-        } else {
-            input.type = 'password';
-            eyeIcon.setAttribute('name', 'eye-outline');
+            const nome = document.getElementById('nome').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const senha = document.getElementById('senha').value;
+            const confirmacaoSenha = document.getElementById('confirmacaoSenha').value;
+
+            let valido = true;
+
+            // Validação do Nome
+            if (nome === '') {
+                mostrarErro('error-nome', 'Por favor, digite seu nome completo');
+                valido = false;
+            } else if (nome.length < 2) {
+                mostrarErro('error-nome', 'O nome deve ter pelo menos 2 caracteres');
+                valido = false;
+            }
+
+            // Validação do Email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (email === '') {
+                mostrarErro('error-email', 'Por favor, digite seu e-mail');
+                valido = false;
+            } else if (!emailRegex.test(email)) {
+                mostrarErro('error-email', 'Por favor, digite um e-mail válido');
+                valido = false;
+            }
+
+            // Validação da Senha
+            if (senha === '') {
+                mostrarErro('error-senha', 'Por favor, digite uma senha');
+                valido = false;
+            } else if (senha.length < 6) {
+                mostrarErro('error-senha', 'A senha deve ter no mínimo 6 caracteres');
+                valido = false;
+            }
+
+            // Validação da Confirmação
+            if (confirmacaoSenha === '') {
+                mostrarErro('error-confirmacao', 'Por favor, confirme sua senha');
+                valido = false;
+            } else if (senha !== confirmacaoSenha) {
+                mostrarErro('error-confirmacao', 'As senhas não coincidem');
+                valido = false;
+            }
+
+            return valido;
         }
-    }
 
-    // Validação em tempo real para melhor UX
-    document.addEventListener('DOMContentLoaded', function() {
-        const campos = ['nome', 'email', 'senha', 'confirmacaoSenha'];
-        
-        campos.forEach(campo => {
-            document.getElementById(campo).addEventListener('input', function() {
-                // Limpa o erro específico quando o usuário começa a digitar
-                const erroId = 'error-' + campo;
-                document.getElementById(erroId).style.display = 'none';
-                document.getElementById(erroId).textContent = '';
+        function mostrarErro(elementId, mensagem) {
+            const elementoErro = document.getElementById(elementId);
+            elementoErro.textContent = mensagem;
+            elementoErro.style.display = 'block';
+            
+            const inputBox = elementoErro.closest('.input-box');
+            inputBox.classList.add('error');
+        }
+
+        function limparErros() {
+            document.querySelectorAll('.error-message').forEach(erro => {
+                erro.textContent = '';
+                erro.style.display = 'none';
+            });
+
+            document.querySelectorAll('.input-box').forEach(box => {
+                box.classList.remove('error');
+            });
+        }
+
+        function togglePassword(campoId, eyeIcon) {
+            const input = document.getElementById(campoId);
+            const icon = eyeIcon.querySelector('ion-icon');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.setAttribute('name', 'eye-off-outline');
+            } else {
+                input.type = 'password';
+                icon.setAttribute('name', 'eye-outline');
+            }
+        }
+
+        // Validação em tempo real
+        document.addEventListener('DOMContentLoaded', function() {
+            const campos = ['nome', 'email', 'senha', 'confirmacaoSenha'];
+            
+            campos.forEach(campo => {
+                const input = document.getElementById(campo);
+                input.addEventListener('input', function() {
+                    const erroId = 'error-' + campo;
+                    document.getElementById(erroId).style.display = 'none';
+                    this.closest('.input-box').classList.remove('error');
+                });
+            });
+
+            // Validação específica para confirmação de senha
+            document.getElementById('confirmacaoSenha').addEventListener('blur', function() {
+                const senha = document.getElementById('senha').value;
+                const confirmacao = this.value;
                 
-                // Remove a classe de erro
-                const inputBox = this.closest('.input-box');
-                inputBox.classList.remove('error');
+                if (confirmacao !== '' && senha !== confirmacao) {
+                    mostrarErro('error-confirmacao', 'As senhas não coincidem');
+                }
             });
         });
 
-        // Validação específica para confirmação de senha em tempo real
-        document.getElementById('confirmacaoSenha').addEventListener('blur', function() {
-            const senha = document.getElementById('senha').value;
-            const confirmacao = this.value;
-            
-            if (confirmacao !== '' && senha !== confirmacao) {
-                mostrarErro('error-confirmacao', 'As senhas não coincidem');
-            }
-        });
-    });
-</script>
+        // Remove classe hydrated se existir
+        document.documentElement.classList.remove('hydrated');
+    </script>
 
 </body>
-=======
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Registro - AcadSystem</title>
-
-    <link rel="stylesheet" th:href="@{/registro.css}" /> 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-    <!-- IonIcons (Ícones) -->
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-</head>
-
-<body>
-
-<div class="container">
-
-    <!-- Lado Esquerdo (Branco / Título / Ilustração) -->
-    <div class="left-side">
-        <h1 class="left-title">AcadSystem</h1>
-        <img th:src="@{/img/logo-escola.png}" src="/img/logo-escola.png"
-             class="ilustracao" alt="Ilustração da Academia">
-    </div>
-
-    <!-- Lado Direito / Formulário de Registro -->
-    <div class="right-side">
-        <div class="wrapper">
-
-            <img th:src="@{/img/conecte-se.png}" src="/img/conecte-se.png" class="logo" alt="Logo de Conexão">
-
-            <h2>Registro</h2>
-            
-            <!-- Alertas dentro do formulário -->
-            <div th:if="${sucessoRegistro}" class="alerta-form alerta-sucesso">
-                <p th:text="${sucessoRegistro}"></p>
-            </div>
-            <div th:if="${erroRegistro}" class="alerta-form alerta-erro">
-                <p th:text="${erroRegistro}"></p>
-            </div>
-            
-            <!-- FORMULÁRIO DE REGISTRO -->
-            <form th:action="@{/registro}" th:object="${coordenador}" method="post" id="formRegistro" onsubmit="return validarFormulario()">
-
-                <!-- CAMPO NOME COMPLETO -->
-                <div class="input-box">
-                    <span class="icon"><ion-icon name="person"></ion-icon></span>
-                    <input type="text" th:field="*{nome}" id="nome" placeholder="Digite seu nome completo" required>
-                    <div class="error-message" id="error-nome"></div>
-                </div>
-                
-                <!-- CAMPO E-MAIL -->
-                <div class="input-box">
-                    <span class="icon"><ion-icon name="mail"></ion-icon></span>
-                    <input type="email" th:field="*{email}" id="email" placeholder="Digite seu e-mail" required>
-                    <div class="error-message" id="error-email"></div>
-                </div>
-
-                <!-- CAMPO SENHA -->
-                <div class="input-box">
-                    <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
-                    <input type="password" th:field="*{senha}" id="senha" placeholder="Digite sua senha" required>
-                    <span class="icon eye-icon" onclick="togglePassword('senha')">
-                        <ion-icon name="eye-outline"></ion-icon>
-                    </span>
-                    <div class="error-message" id="error-senha"></div>
-                </div>
-
-                <!-- CAMPO CONFIRMAÇÃO DE SENHA -->
-                <div class="input-box">
-                    <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
-                    <input type="password" name="confirmacaoSenha" id="confirmacaoSenha" placeholder="Confirme a senha" required>
-                    <span class="icon eye-icon" onclick="togglePassword('confirmacaoSenha')">
-                        <ion-icon name="eye-outline"></ion-icon>
-                    </span>
-                    <div class="error-message" id="error-confirmacao"></div>
-                </div>
-
-                <button type="submit">Próximo</button>
-
-                <div class="register-link">
-                    <p>Já possui conta? <a th:href="@{/login}">Entrar</a></p>
-                </div>
-            </form>
-
-        </div>
-    </div>
-
-</div>
-
-<!-- JavaScript para validações -->
-<script>
-    function validarFormulario() {
-        // Limpar mensagens de erro anteriores
-        limparErros();
-
-        // Obter valores dos campos
-        const nome = document.getElementById('nome').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const senha = document.getElementById('senha').value;
-        const confirmacaoSenha = document.getElementById('confirmacaoSenha').value;
-
-        let valido = true;
-
-        // Validação do Nome
-        if (nome === '') {
-            mostrarErro('error-nome', 'Por favor, digite seu nome completo');
-            valido = false;
-        } else if (nome.length < 2) {
-            mostrarErro('error-nome', 'O nome deve ter pelo menos 2 caracteres');
-            valido = false;
-        }
-
-        // Validação do Email
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (email === '') {
-            mostrarErro('error-email', 'Por favor, digite seu e-mail');
-            valido = false;
-        } else if (!emailRegex.test(email)) {
-            mostrarErro('error-email', 'E-mail incorreto');
-            valido = false;
-        }
-
-        // Validação da Senha
-        if (senha === '') {
-            mostrarErro('error-senha', 'Por favor, digite uma senha');
-            valido = false;
-        } else if (senha.length < 8) {
-            mostrarErro('error-senha', 'A senha deve ter no mínimo 8 caracteres');
-            valido = false;
-        }
-
-        // Validação da Confirmação de Senha
-        if (confirmacaoSenha === '') {
-            mostrarErro('error-confirmacao', 'Por favor, confirme sua senha');
-            valido = false;
-        } else if (senha !== confirmacaoSenha) {
-            mostrarErro('error-confirmacao', 'As senhas não coincidem');
-            valido = false;
-        }
-
-        return valido;
-    }
-
-    function mostrarErro(elementId, mensagem) {
-        const elementoErro = document.getElementById(elementId);
-        elementoErro.textContent = mensagem;
-        elementoErro.style.display = 'block';
-        
-        // Adicionar classe de erro ao input-box pai
-        const inputBox = elementoErro.closest('.input-box');
-        inputBox.classList.add('error');
-    }
-
-    function limparErros() {
-        // Limpar todas as mensagens de erro
-        const erros = document.querySelectorAll('.error-message');
-        erros.forEach(erro => {
-            erro.textContent = '';
-            erro.style.display = 'none';
-        });
-
-        // Remover classes de erro dos inputs
-        const inputBoxes = document.querySelectorAll('.input-box');
-        inputBoxes.forEach(box => {
-            box.classList.remove('error');
-        });
-    }
-
-    // Função para mostrar/ocultar senha
-    function togglePassword(campoId) {
-        const input = document.getElementById(campoId);
-        const eyeIcon = input.parentElement.querySelector('.eye-icon ion-icon');
-        
-        if (input.type === 'password') {
-            input.type = 'text';
-            eyeIcon.setAttribute('name', 'eye-off-outline');
-        } else {
-            input.type = 'password';
-            eyeIcon.setAttribute('name', 'eye-outline');
-        }
-    }
-
-    // Validação em tempo real para melhor UX
-    document.addEventListener('DOMContentLoaded', function() {
-        const campos = ['nome', 'email', 'senha', 'confirmacaoSenha'];
-        
-        campos.forEach(campo => {
-            document.getElementById(campo).addEventListener('input', function() {
-                // Limpa o erro específico quando o usuário começa a digitar
-                const erroId = 'error-' + campo;
-                document.getElementById(erroId).style.display = 'none';
-                document.getElementById(erroId).textContent = '';
-                
-                // Remove a classe de erro
-                const inputBox = this.closest('.input-box');
-                inputBox.classList.remove('error');
-            });
-        });
-
-        // Validação específica para confirmação de senha em tempo real
-        document.getElementById('confirmacaoSenha').addEventListener('blur', function() {
-            const senha = document.getElementById('senha').value;
-            const confirmacao = this.value;
-            
-            if (confirmacao !== '' && senha !== confirmacao) {
-                mostrarErro('error-confirmacao', 'As senhas não coincidem');
-            }
-        });
-    });
-</script>
-
-</body>
->>>>>>> 9e93ba123b7ce12703712f423d83b350b9cc1f36
 </html>
