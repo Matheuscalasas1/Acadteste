@@ -203,15 +203,22 @@ Carregamento assíncrono
 <h2>📊 Modelo de Dados</h2>
 <h1>Diagrama de Entidades</h1>
 
-┌─────────────────┐    ┌─────────────────┐
-│   COORDENADOR   │    │     ALUNO       │
-├─────────────────┤    ├─────────────────┤
-│ id (PK)         │    │ id (PK)         │
-│ email (UK)      │    │ nome_aluno      │
-│ senha           │    │ curso           │
-│ nome            │    │ matricula (UK)  │
-│ departamento    │    │ turno           │
-│ data_criacao    │    │ status          │
-└─────────────────┘    │ data_criacao    │
-                       │ data_atualizacao│
-                       └─────────────────┘
+<h3>Coordenador</h3>
+
+- id (pk)
+- email (uk)
+- senha
+- nome
+- departamento
+- data_criacao
+
+<h3>Aluno</h3>
+
+- id (pk)
+- nome_aluno
+- curso
+- matricula (uk)
+- turno
+- status
+- data_criacao
+- data_atualizacao
