@@ -24,14 +24,7 @@ body {
   min-height: 100vh;
 }
 
-/* Mobile First - Empilha verticalmente */
-.left-side, .right-side {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 2rem 1rem;
-}
+
 
 .left-side {
   background: #b0e0e6;
@@ -570,5 +563,6 @@ button:hover {
   h2 {
     font-size: 1.8em;
   }
+
 >>>>>>> 9e93ba123b7ce12703712f423d83b350b9cc1f36
 }
