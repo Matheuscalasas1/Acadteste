@@ -32,10 +32,10 @@ public class CoordenadorService {
      */
     public Coordenador salvarCoordenador(Coordenador coordenador) {
         // 1. VERIFICAÇÃO DE EMAIL DUPLICADO
-        Optional<Object> coordenadorExistente = Optional.ofNullable(coordenadorRepository.findByEmail(coordenador.getEmail()));
-        if (coordenadorExistente.isPresent()) {
-            throw new IllegalStateException("O e-mail '" + coordenador.getEmail() + "' já está cadastrado.");
-        }
+        Optional<Object> coordenadorExistente = coordenadorRepository.findByEmail(coordenador.getEmail());
+if (coordenadorExistente.isPresent()) {
+    throw new IllegalStateException("O e-mail '" + coordenador.getEmail() + "' já está cadastrado.");
+}
 
         // 2. CRIPTOGRAFIA DA SENHA
         String senhaCriptografada = passwordEncoder.encode(coordenador.getSenha());
