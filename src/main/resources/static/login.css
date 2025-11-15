@@ -7,6 +7,13 @@
   font-family: 'Poppins', sans-serif;
 }
 
+.background_img {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  width: 100%;
+}
+
 body {
   display: flex;
   justify-content: center;
@@ -17,46 +24,13 @@ body {
   background: #000;
 }
 
-.container {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  min-height: 100vh;
-}
-
-/* Mobile First - Empilha verticalmente */
-.left-side, .right-side {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 2rem 1rem;
-}
-
-.left-side {
-  background: #b0e0e6;
-  order: 2;
-  min-height: 40vh;
-}
-
-.right-side {
-  background: #000;
-  order: 1;
-  min-height: 60vh;
-}
-
-.left-title {
-  font-family: 'Poppins', sans-serif;
-  font-size: 2rem;
-  font-weight: 700;
-  color: #222;
-  margin-bottom: 1rem;
-  text-align: center;
-}
-
-.ilustracao {
-  max-width: 80%;
-  height: auto;
+.logo {
+ width: 80px;
+ height: auto;
+ display: block;
+ margin: 0 auto 10px auto;
+ border-radius: 10px; /* Arredonda as bordas da imagem */
+ object-fit: cover;
 }
 
 .wrapper {
@@ -73,38 +47,34 @@ body {
   box-shadow: 0 0 10px #000;
 }
 
-.logo {
- width: 80px;
- height: auto;
- display: block;
- margin: 0 auto 10px auto;
- border-radius: 10px; /* Arredonda as bordas da imagem */
- object-fit: cover;
+.wrapper:hover {
+  border-color: #0ef;
+  box-shadow: 0 0 20px #0ef, inset 0 0 20px #0ef;
 }
 
 h2 {
-  font-size: 1.6em;
+  font-size: 1.8em;
   text-align: center;
   color: #fff;
-  margin-bottom: 1rem;
+  margin-bottom: 15px;
 }
 
 .input-box {
   position: relative;
   width: 100%;
-  margin: 1rem 0;
+  margin: 18px 0;
 }
 
 .input-box input {
   width: 100%;
-  height: 45px;
+  height: 42px;
   background: transparent;
   border: 1.5px solid #333;
   outline: none;
   border-radius: 6px;
   font-size: 0.95em;
   color: #fff;
-  padding: 0 15px 0 45px;
+  padding: 0 10px 0 38px;
   transition: .3s;
 }
 
@@ -115,28 +85,38 @@ h2 {
 .input-box .icon {
   position: absolute;
   top: 50%;
-  left: 15px;
+  left: 10px;
   transform: translateY(-50%);
   color: #aaa;
   font-size: 1.1em;
   transition: .3s;
 }
 
-.eye-icon {
-  position: absolute;
-  top: 50%;
-  right: 15px;
-  transform: translateY(-50%);
+.wrapper:hover .input-box .icon {
+  color: #0ef;
+}
+
+.forgot-pass {
+  width: 100%;
+  text-align: right;
+  margin-top: -10px;
+}
+
+.forgot-pass a {
   color: #aaa;
-  font-size: 1.1em;
-  cursor: pointer;
+  font-size: .85em;
+  text-decoration: none;
   transition: .3s;
-  left: auto !important;
+}
+
+.forgot-pass a:hover {
+  color: #0ef;
+  text-decoration: underline;
 }
 
 button {
   width: 100%;
-  height: 45px;
+  height: 40px;
   background: #0ef;
   border: none;
   border-radius: 6px;
@@ -145,13 +125,18 @@ button {
   font-weight: 600;
   color: #000;
   transition: .3s;
-  margin-top: 1rem;
+  margin-top: 15px;
+}
+
+button:hover {
+  background: #00d0d0;
+  box-shadow: 0 0 10px #0ef, 0 0 10px #0ef;
 }
 
 .register-link {
   font-size: .85em;
   text-align: center;
-  margin-top: 1.5rem;
+  margin-top: 20px;
 }
 
 .register-link p {
@@ -166,122 +151,230 @@ button {
   transition: .3s;
 }
 
-/* Efeitos hover */
-.wrapper:hover {
-  border-color: #0ef;
-  box-shadow: 0 0 20px #0ef, inset 0 0 20px #0ef;
-}
-
-.wrapper:hover .input-box .icon,
-.wrapper:hover .eye-icon {
-  color: #0ef;
-}
-
-button:hover {
-  background: #00d0d0;
-  box-shadow: 0 0 10px #0ef, 0 0 10px #0ef;
-}
-
 .register-link p a:hover {
   text-decoration: underline;
 }
 
-.eye-icon:hover {
-  color: #0ef;
+.container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
 }
 
-.input-box input:focus {
-  border-color: #0ef;
-  box-shadow: 0 0 5px rgba(0, 238, 255, 0.5);
+
+
+.right-side {
+  width: 50%;
+  background: #000; /* preto */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-/* Alertas */
-.alerta-form {
-  width: 100%;
-  padding: 12px;
+.ilustracao {
+  max-width: 80%;
+  height: auto;
+}
+
+.left-side {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  background: #b0e0e6; /* pode trocar depois */
+  padding: 20px;
+}
+
+.left-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 3rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 20px;
   text-align: center;
-  font-weight: bold;
-  border-radius: 6px;
-  margin-bottom: 15px;
-  font-size: 0.9em;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  text-shadow: 0 0 8px rgba(0,0,0,0.15);
 }
 
+.ilustracao {
+  max-width: 65%;
+  height: auto;
+}
+
+/* --- ESTILOS PARA ALERTAS (MENSAGENS DE SUCESSO/ERRO) --- */
+
+.alerta-sucesso, .alerta-erro {
+    position: fixed; /* Fixa o alerta no topo */
+    top: 0;
+    left: 0;
+    width: 100%; /* Ocupa a largura total */
+    padding: 15px;
+    text-align: center;
+    font-weight: bold;
+    z-index: 1000; /* Garante que fique acima de outros elementos */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box; /* Inclui padding na largura total */
+}
+
+/* Fundo verde e fonte branca para Sucesso */
 .alerta-sucesso {
-  background-color: #4CAF50;
-  color: white;
+    background-color: #4CAF50; /* Um verde agradável */
+    color: white;
 }
 
+/* Fundo vermelho e fonte branca para Erro */
 .alerta-erro {
-  background-color: #f44336;
-  color: white;
+    background-color: #f44336; /* Um vermelho para erro */
+    color: white;
 }
 
-/* Mensagens de erro */
+/* Estilo para o parágrafo dentro do alerta */
+.alerta-sucesso p, .alerta-erro p {
+    margin: 0;
+}
+
+/* --- ADICIONE OS SEUS ESTILOS JÁ EXISTENTES ABAIXO --- */
+/* ... Seus estilos de layout, card, input-group, etc. */
+
+/* ESTILOS PARA MENSAGENS DE ERRO */
 .error-message {
-  color: #ff4444;
-  font-size: 0.8em;
-  margin-top: 5px;
-  display: none;
-  text-align: left;
-  padding-left: 5px;
+    color: #ff4444;
+    font-size: 0.8em;
+    margin-top: 5px;
+    display: none;
+    text-align: left;
+    padding-left: 5px;
 }
 
+/* Estilo para inputs com erro */
 .input-box.error input {
-  border-color: #ff4444 !important;
-  box-shadow: 0 0 5px rgba(255, 68, 68, 0.5);
+    border-color: #ff4444 !important;
+    box-shadow: 0 0 5px rgba(255, 68, 68, 0.5);
 }
 
 .input-box.error .icon {
-  color: #ff4444 !important;
+    color: #ff4444 !important;
 }
 
-/* Tablet */
-@media (min-width: 768px) {
-  .container {
-    flex-direction: row;
-    min-height: 100vh;
-  }
-  
-  .left-side, .right-side {
-    width: 50%;
-    height: 100vh;
-  }
-  
-  .left-side {
-    order: 1;
-  }
-  
-  .right-side {
-    order: 2;
-  }
-  
-  .left-title {
-    font-size: 2.5rem;
-  }
-  
-  .ilustracao {
-    max-width: 65%;
-  }
-  
-  .wrapper {
-    padding: 2.5rem 2rem;
-  }
+/* Estilo para inputs válidos (opcional) */
+.input-box.valid input {
+    border-color: #4CAF50 !important;
 }
 
-/* Desktop */
-@media (min-width: 1024px) {
-  .left-title {
-    font-size: 3rem;
-  }
-  
-  .wrapper {
-    max-width: 420px;
-    padding: 3rem 2.5rem;
-  }
-  
-  h2 {
-    font-size: 1.8em;
-  }
+/* Melhorar a aparência dos inputs quando em foco */
+.input-box input:focus {
+    border-color: #0ef;
+    box-shadow: 0 0 5px rgba(0, 238, 255, 0.5);
 }
 
+/* Ajuste no wrapper para acomodar mensagens de erro */
+.wrapper {
+    position: relative;
+}
+
+/* ESTILO PARA O ÍCONE DO OLHO */
+.eye-icon {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    color: #aaa;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: .3s;
+    left: auto !important; /* Sobrescreve o left do ícone padrão */
+}
+
+.eye-icon:hover {
+    color: #0ef;
+}
+
+.wrapper:hover .eye-icon {
+    color: #0ef;
+}
+
+/* Ajuste no padding dos inputs para acomodar o ícone do olho */
+.input-box input {
+    width: 100%;
+    height: 42px;
+    background: transparent;
+    border: 1.5px solid #333;
+    outline: none;
+    border-radius: 6px;
+    font-size: 0.95em;
+    color: #fff;
+    padding: 0 38px 0 38px; /* Aumentado para ambos os lados */
+    transition: .3s;
+}
+
+/* Posicionamento correto dos ícones */
+.input-box .icon:first-child {
+    left: 10px;
+    right: auto;
+}
+
+.input-box .eye-icon {
+    left: auto;
+    right: 10px;
+}
+
+/* Estilo quando a senha está visível */
+.eye-icon[data-visible="true"] {
+    color: #0ef;
+}
+
+/* Estilo quando a senha está oculta */
+.eye-icon[data-visible="false"] {
+    color: #aaa;
+}
+
+/* --- ESTILOS PARA ALERTAS DENTRO DO FORMULÁRIO --- */
+.alerta-form {
+    width: 100%;
+    padding: 12px;
+    text-align: center;
+    font-weight: bold;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    font-size: 0.9em;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.alerta-sucesso {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.alerta-erro {
+    background-color: #f44336;
+    color: white;
+}
+
+.alerta-form p {
+    margin: 0;
+}
+
+
+/* --- ESTILOS PARA MENSAGENS DE ERRO NOS CAMPOS --- */
+.error-message {
+    color: #ff4444;
+    font-size: 0.8em;
+    margin-top: 5px;
+    display: none;
+    text-align: left;
+    padding-left: 5px;
+}
+
+/* Estilo para inputs com erro */
+.input-box.error input {
+    border-color: #ff4444 !important;
+    box-shadow: 0 0 5px rgba(255, 68, 68, 0.5);
+}
+
+.input-box.error .icon {
+    color: #ff4444 !important;
+}
+
+.register-link p:last-child {
+    margin-top: 0;
+}
