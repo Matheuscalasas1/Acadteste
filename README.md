@@ -79,3 +79,121 @@ Frontend
 - Mensagens de feedback (sucesso/erro)
 
 - Loading states durante operações
+
+
+📖 Guia de Uso
+Primeiro Acesso
+Registro de Coordenador:
+
+Acesse /registro
+
+Preencha nome, email e senha
+
+Confirme a senha
+
+Sistema redireciona para login automaticamente
+
+Login no Sistema:
+
+Acesse /login
+
+Use email e senha cadastrados
+
+Será redirecionado para a página inicial
+
+Gestão de Alunos
+Cadastrar Novo Aluno
+Na página inicial, clique em "Adicionar Aluno"
+
+Preencha os campos obrigatórios:
+
+Nome completo
+
+Curso
+
+Turno (Matutino/Vespertino/Noturno)
+
+Status (Ativo/Inativo/Trancado/Formado)
+
+A matrícula é gerada automaticamente
+
+Clique em "Cadastrar Aluno"
+
+Editar Aluno
+Na lista de alunos, clique em "Atualizar"
+
+Modifique os campos necessários
+
+A matrícula não pode ser alterada
+
+Clique em "Atualizar Aluno"
+
+Visualizar Detalhes
+Clique em "Detalhes" na lista de alunos
+
+Veja informações completas incluindo:
+
+Dados pessoais
+
+Informações acadêmicas
+
+Datas de criação e atualização
+
+Excluir Aluno
+Clique em "Deletar" na lista
+
+Confirme a exclusão no popup
+
+O aluno será removido permanentemente
+
+Relatórios
+Acesse a seção de Relatórios através do menu
+
+Use os filtros para personalizar a visualização:
+
+Selecione mês específico
+
+Escolha o ano desejado
+
+Visualize os gráficos:
+
+Distribuição por curso
+
+Alunos por turno
+
+Status dos alunos
+
+Evolução mensal
+
+Analise a tabela resumo com porcentagens
+
+🔧 Funcionalidades Técnicas
+Sistema de Matrícula Automática
+Geração sequencial por ano (ex: 20250001, 20250002)
+
+Prevenção de duplicatas
+
+Formato: ANO + 4 dígitos sequenciais
+
+Validações de Segurança
+Senhas criptografadas com BCrypt
+
+Prevenção de SQL Injection
+
+Validação de sessões
+
+Proteção contra CSRF
+
+Design Responsivo
+Adaptação para mobile, tablet e desktop
+
+Grid system flexível
+
+Media queries otimizadas
+
+Performance
+Consultas otimizadas ao banco
+
+Cache de gráficos
+
+Carregamento assíncrono
