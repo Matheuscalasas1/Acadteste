@@ -51,7 +51,6 @@
             margin-top: 2rem;
             padding-top: 2rem;
             border-top: 1px solid #eee;
-            flex-wrap: wrap;
         }
         
         .info-card {
@@ -68,7 +67,6 @@
             padding-bottom: 0.5rem;
         }
 
-        /* Estilos para os badges de status */
         .badge-success {
             background-color: #28a745;
             color: white;
@@ -104,154 +102,22 @@
             font-size: 0.85rem;
             font-weight: 500;
         }
-
-        /* Estilos para os botões */
-        .btn-update {
-            background: #007bff;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 0.9rem;
-            transition: background 0.3s;
-        }
-        
-        .btn-update:hover {
-            background: #0056b3;
-        }
-        
-        .btn-delete {
-            background: #dc3545;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 0.9rem;
-            transition: background 0.3s;
-        }
-        
-        .btn-delete:hover {
-            background: #c82333;
-        }
-        
-        .btn-back {
-            background: #6c757d;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 0.9rem;
-            transition: background 0.3s;
-            text-decoration: none;
-        }
-        
-        .btn-back:hover {
-            background: #545b62;
-            color: white;
-        }
-
-        .no-data {
-            text-align: center;
-            padding: 2rem;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        /* Responsividade */
-        @media (max-width: 768px) {
-            .detalhes-container {
-                padding: 1rem;
-                margin: 0.5rem;
-            }
-            
-            .detalhes-item {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 0.5rem;
-            }
-            
-            .detalhes-item strong {
-                min-width: auto;
-            }
-            
-            .detalhes-item span {
-                text-align: left;
-            }
-            
-            .detalhes-actions {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            
-            .info-card {
-                padding: 1rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .detalhes-container {
-                padding: 0.5rem;
-            }
-            
-            .detalhes-item {
-                padding: 0.75rem 0.5rem;
-            }
-            
-            .btn-update,
-            .btn-delete,
-            .btn-back {
-                padding: 8px 16px;
-                font-size: 0.85rem;
-            }
-        }
     </style>
 </head>
 <body>
 <header>
     <nav class="navbar">
-        <div class="nav-group">
-            <a class="nav-link" href="/home">
-                <ion-icon name="home"></ion-icon>
-                <span class="nav-text">Página inicial</span>
-            </a>
-            <a class="nav-link" href="/relatorios">
-                <ion-icon name="bar-chart"></ion-icon>
-                <span class="nav-text">Relatórios</span>
-            </a>
-        </div>
-        <a class="nav-link nav-sair" href="/logout">
-            <ion-icon name="log-out"></ion-icon>
-            <span class="nav-text">Sair</span>
-        </a>
+        <a class="nav-link" th:href="@{/home}">← Voltar para Lista de Alunos</a>
     </nav>
 </header>
 
 <div class="container">
     <div class="section active">
-        <div class="nav-relatorios">
-            <h1>👤 Detalhes do Aluno</h1>
-            <a href="/home" class="btn-back">
-                <ion-icon name="arrow-back"></ion-icon>
-                Voltar para Lista
-            </a>
-        </div>
+        <h2>Detalhes do Aluno</h2>
         
         <div th:if="${aluno}" class="detalhes-container">
             <div class="info-card">
-                <h3>📋 Informações Pessoais</h3>
+                <h3>Informações Pessoais</h3>
                 <div class="detalhes-item">
                     <strong>Nome Completo:</strong>
                     <span th:text="${aluno.nomeAluno}"></span>
@@ -263,7 +129,7 @@
             </div>
             
             <div class="info-card">
-                <h3>🎓 Informações Acadêmicas</h3>
+                <h3>Informações Acadêmicas</h3>
                 <div class="detalhes-item">
                     <strong>Curso:</strong>
                     <span th:text="${aluno.curso}"></span>
@@ -275,15 +141,15 @@
                 <div class="detalhes-item">
                     <strong>Status:</strong>
                     <span th:text="${aluno.status}" 
-                          th:classappend="${aluno.status == 'Ativo'} ? 'badge-success' :
-                                       (${aluno.status == 'Inativo'} ? 'badge-danger' :
-                                       (${aluno.status == 'Trancado'} ? 'badge-warning' : 'badge-info'))">
+                          th:class="${aluno.status == 'Ativo'} ? 'badge-success' :
+                                   (${aluno.status == 'Inativo'} ? 'badge-danger' :
+                                   (${aluno.status == 'Trancado'} ? 'badge-warning' : 'badge-info'))">
                     </span>
                 </div>
             </div>
             
             <div class="info-card">
-                <h3>⚙️ Informações do Sistema</h3>
+                <h3>Informações do Sistema</h3>
                 <div class="detalhes-item">
                     <strong>Data de Cadastro:</strong>
                     <span th:text="${#temporals.format(aluno.dataCriacao, 'dd/MM/yyyy HH:mm')}"></span>
@@ -294,7 +160,7 @@
                 </div>
                 <div class="detalhes-item">
                     <strong>ID no Sistema:</strong>
-                    <span th:text="${aluno.id}" style="font-family: monospace; color: #666;"></span>
+                    <span th:text="${aluno.id}" style="font-family: monospace;"></span>
                 </div>
             </div>
             
@@ -309,20 +175,19 @@
                     Excluir Aluno
                 </button>
                 
-                <a href="/home" class="btn-back">
+                <button class="btn-back" th:onclick="'window.location.href=\'/home\''">
                     <ion-icon name="arrow-back"></ion-icon>
                     Voltar para Lista
-                </a>
+                </button>
             </div>
         </div>
         
         <div th:unless="${aluno}" class="no-data">
-            <h3>❌ Aluno não encontrado</h3>
-            <p>O aluno solicitado não foi encontrado no sistema.</p>
-            <a href="/home" class="btn-back" style="display: inline-flex; width: auto;">
+            <p>Aluno não encontrado.</p>
+            <button class="btn-back" th:onclick="'window.location.href=\'/home\''">
                 <ion-icon name="arrow-back"></ion-icon>
                 Voltar para Lista
-            </a>
+            </button>
         </div>
     </div>
 </div>
@@ -333,7 +198,7 @@
 
 <script>
     function confirmarDelete(alunoId, alunoNome) {
-        if (confirm('Tem certeza que deseja excluir o aluno "' + alunoNome + '"?\n\nEsta ação não pode ser desfeita.')) {
+        if (confirm('Tem certeza que deseja excluir o aluno "' + alunoNome + '"?')) {
             window.location.href = '/alunos/delete/' + alunoId;
         }
     }
